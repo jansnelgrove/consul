@@ -12,6 +12,8 @@ describe "Users" do
         fill_in "user_email",                 with: "manuela@consul.dev"
         fill_in "user_password",              with: "judgementday"
         fill_in "user_password_confirmation", with: "judgementday"
+        fill_in "Postcode",                   with: "AB99"
+        fill_in "Country of residence",       with: "Scotland"
         check "user_terms_of_service"
 
         click_button "Register"

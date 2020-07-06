@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe "Admin users" do
   let(:admin) { create(:administrator) }
-  let!(:user) { create(:user, username: "Jose Luis Balbin") }
+  let!(:user) { create(:user, username: "Jose Luis Balbin", postcode: "AB99", country: "Scotland") }
 
   before do
     login_as(admin.user)
@@ -14,6 +14,8 @@ describe "Admin users" do
     expect(page).to have_content user.email
     expect(page).to have_content admin.name
     expect(page).to have_content admin.email
+    expect(page).to have_content "AB99"
+    expect(page).to have_content "Scotland"
   end
 
   scenario "The username links to their public profile" do
@@ -30,5 +32,7 @@ describe "Admin users" do
     expect(page).to have_content user.email
     expect(page).not_to have_content admin.name
     expect(page).not_to have_content admin.email
+    expect(page).to have_content "AB99"
+    expect(page).to have_content "Scotland"
   end
 end
