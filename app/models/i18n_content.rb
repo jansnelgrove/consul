@@ -52,6 +52,8 @@ class I18nContent < ApplicationRecord
   def self.translations_for(tab)
     if tab.to_s == "basic"
       basic_translations
+    elsif tab.to_s == "custom"
+      custom_translations
     else
       flat_hash(translations_hash_for(tab)).keys
     end
@@ -92,6 +94,28 @@ class I18nContent < ApplicationRecord
       legislation.processes.index.section_footer.description
       budgets.index.section_footer.title
       budgets.index.section_footer.description
+    ]
+  end
+
+  def self.custom_translations
+    %w[
+      activerecord.attributes.user.postcode
+      devise_views.users.registrations.new.postcode_note
+      activerecord.attributes.user.country
+      devise_views.users.registrations.new.country_note
+      legislation.processes.index.section_header.title
+      legislation.processes.index.section_header.help
+      legislation.questions.comments.comments_title
+      legislation.questions.comments.comments_title_help
+      legislation.questions.comments.comments_title_link
+      legislation.questions.comments.comments_title_link_url
+      legislation.questions.comments.comment_button
+      legislation.questions.comments.form.leave_comment_help_text
+      legislation.questions.comments.form.leave_comment
+      legislation.questions.comments.form.guidelines
+      legislation.questions.comments.form.error
+      admin.users.columns.country
+      admin.users.columns.postcode
     ]
   end
 end
