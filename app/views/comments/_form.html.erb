@@ -4,7 +4,7 @@
   <div id="js-comment-form-<%= css_id %>" <%= raw("style='display:none'") if toggeable %> class="comment-form">
     <%= form_for Comment.new, remote: true do |f| %>
       <% if commentable.class == Legislation::Question %>
-        <%= f.label :body, leave_comment_text(commentable) %>
+        <%= f.label :body, leave_comment_text(commentable), class: "comment-form-label" %>
 
         <p>
           <%= sanitize(t("legislation.questions.comments.comments_title_help",

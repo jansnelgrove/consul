@@ -6,6 +6,8 @@
   <section class="expanded comments">
     <div class="row">
       <div id="comments" class="small-12 column">
+        <%= render "shared/wide_order_selector", i18n_namespace: "comments" %>
+
         <% if display_comments_count %>
           <h2>
             <%= comment_tree_title_text(commentable) %>
@@ -21,7 +23,15 @@
           <% end %>
         <% end %>
 
-        <%= render "shared/wide_order_selector", i18n_namespace: "comments" %>
+        <% comment_tree.root_comments.each do |comment| %>
+          <%= render "comments/comment", { comment: comment,
+                                           comment_flags: comment_flags,
+                                           valuation: valuation,
+                                           allow_votes: !valuation,
+                                           allow_actions: !valuation,
+                                           allow_comments: allow_comments,
+                                           admin_layout: admin_layout } %>
+        <% end %>
 
         <% if user_signed_in? %>
           <% if comments_closed_for_commentable?(commentable) %>
@@ -45,15 +55,6 @@
           <%= render "shared/login_to_comment" %>
         <% end %>
 
-        <% comment_tree.root_comments.each do |comment| %>
-          <%= render "comments/comment", { comment: comment,
-                                           comment_flags: comment_flags,
-                                           valuation: valuation,
-                                           allow_votes: !valuation,
-                                           allow_actions: !valuation,
-                                           allow_comments: allow_comments,
-                                           admin_layout: admin_layout } %>
-        <% end %>
         <%= paginate comment_tree.root_comments %>
       </div>
     </div>
