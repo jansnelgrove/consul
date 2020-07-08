@@ -5,7 +5,8 @@ section "Commenting Investments, Debates & Proposals" do
       Comment.create!(user: User.all.sample,
                       created_at: rand(commentable.created_at..Time.current),
                       commentable: commentable,
-                      body: Faker::Lorem.sentence)
+                      body: Faker::Lorem.sentence,
+                      terms_of_service: 1)
     end
   end
 end
@@ -18,6 +19,7 @@ section "Commenting Comments" do
                     commentable_id: parent.commentable_id,
                     commentable_type: parent.commentable_type,
                     body: Faker::Lorem.sentence,
-                    parent: parent)
+                    parent: parent,
+                    terms_of_service: 1)
   end
 end

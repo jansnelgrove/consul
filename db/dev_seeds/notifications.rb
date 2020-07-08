@@ -9,7 +9,8 @@ section "Creating comment notifications" do
 
     comment = Comment.create!(user: User.reorder("RANDOM()").first,
                               body: Faker::Lorem.sentence,
-                              commentable: debate)
+                              commentable: debate,
+                              terms_of_service: 1)
 
     Notification.add(user, comment)
   end

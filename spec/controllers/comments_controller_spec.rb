@@ -19,7 +19,8 @@ describe CommentsController do
                         comment: {
                           commentable_id: question.id,
                           commentable_type: "Legislation::Question",
-                          body: "a comment"
+                          body: "a comment",
+                          terms_of_service: 1
                         }
                       }
       end.to change { question.reload.comments_count }.by(1)
@@ -35,7 +36,8 @@ describe CommentsController do
                         comment: {
                           commentable_id: question.id,
                           commentable_type: "Legislation::Question",
-                          body: "a comment"
+                          body: "a comment",
+                          terms_of_service: 1
                         }
                       }
       end.not_to change { question.reload.comments_count }
@@ -50,7 +52,8 @@ describe CommentsController do
                         comment: {
                           commentable_id: question.id,
                           commentable_type: "Legislation::Question",
-                          body: "a comment"
+                          body: "a comment",
+                          terms_of_service: 1
                         }
                       }
       end.not_to change { question.reload.comments_count }
