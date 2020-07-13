@@ -198,7 +198,8 @@ describe "Commenting legislation questions" do
     visit legislation_process_question_path(legislation_question.process, legislation_question)
 
     fill_in "comment-body-legislation_question_#{legislation_question.id}", with: "Have you thought about...?"
-    click_button "Publish answer"
+    check "terms_of_service_legislation_question_#{legislation_question.id}"
+    click_button "Publish Proposed Amendment"
 
     within "#comments" do
       expect(page).to have_content "Have you thought about...?"
@@ -210,9 +211,10 @@ describe "Commenting legislation questions" do
     login_as(user)
     visit legislation_process_question_path(legislation_question.process, legislation_question)
 
-    click_button "Publish answer"
+    click_button "Publish Proposed Amendment"
 
-    expect(page).to have_content "Can't be blank"
+    expect(page).to have_content "Make sure that the amendment is not blank and confirm that you have "\
+                                 "read the guidelines for submitting an amendment."
   end
 
   scenario "Unverified user can't create comments", :js do
@@ -245,6 +247,7 @@ describe "Commenting legislation questions" do
 
     within "#js-comment-form-comment_#{comment.id}" do
       fill_in "comment-body-comment_#{comment.id}", with: "It will be done next week."
+      check "terms_of_service_comment_#{comment.id}"
       click_button "Publish reply"
     end
 
@@ -265,7 +268,8 @@ describe "Commenting legislation questions" do
 
     within "#js-comment-form-comment_#{comment.id}" do
       click_button "Publish reply"
-      expect(page).to have_content "Can't be blank"
+      expect(page).to have_content "Make sure that the amendment is not blank and confirm that you have "\
+                                   "read the guidelines for submitting an amendment."
     end
   end
 
@@ -344,11 +348,12 @@ describe "Commenting legislation questions" do
     visit legislation_process_question_path(legislation_question.process, legislation_question)
 
     fill_in "comment-body-legislation_question_#{legislation_question.id}", with: "Testing submit button!"
-    click_button "Publish answer"
+    check "terms_of_service_legislation_question_#{legislation_question.id}"
+    click_button "Publish Proposed Amendment"
 
     # The button's text should now be "..."
     # This should be checked before the Ajax request is finished
-    expect(page).not_to have_button "Publish answer"
+    expect(page).not_to have_button "Publish Proposed Amendment"
 
     expect(page).to have_content("Testing submit button!")
   end
@@ -362,7 +367,8 @@ describe "Commenting legislation questions" do
 
       fill_in "comment-body-legislation_question_#{legislation_question.id}", with: "I am moderating!"
       check "comment-as-moderator-legislation_question_#{legislation_question.id}"
-      click_button "Publish answer"
+      check "terms_of_service_legislation_question_#{legislation_question.id}"
+      click_button "Publish Proposed Amendment"
 
       within "#comments" do
         expect(page).to have_content "I am moderating!"
@@ -386,6 +392,7 @@ describe "Commenting legislation questions" do
       within "#js-comment-form-comment_#{comment.id}" do
         fill_in "comment-body-comment_#{comment.id}", with: "I am moderating!"
         check "comment-as-moderator-comment_#{comment.id}"
+        check "terms_of_service_comment_#{comment.id}"
         click_button "Publish reply"
       end
 
@@ -418,7 +425,8 @@ describe "Commenting legislation questions" do
 
       fill_in "comment-body-legislation_question_#{legislation_question.id}", with: "I am your Admin!"
       check "comment-as-administrator-legislation_question_#{legislation_question.id}"
-      click_button "Publish answer"
+      check "terms_of_service_legislation_question_#{legislation_question.id}"
+      click_button "Publish Proposed Amendment"
 
       within "#comments" do
         expect(page).to have_content "I am your Admin!"
@@ -442,6 +450,7 @@ describe "Commenting legislation questions" do
       within "#js-comment-form-comment_#{comment.id}" do
         fill_in "comment-body-comment_#{comment.id}", with: "Top of the world!"
         check "comment-as-administrator-comment_#{comment.id}"
+        check "terms_of_service_comment_#{comment.id}"
         click_button "Publish reply"
       end
 

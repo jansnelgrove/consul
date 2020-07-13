@@ -64,8 +64,8 @@ en:
         no_past_processes: There aren't past processes
         section_header:
           icon_alt: Collaborative legislation icon
-          title: Collaborative legislation
-          help: Help about collaborative legislation
+          title: "Public Consultation"
+          help: "Help with public consultation"
         section_footer:
           title: Help about collaborative legislation
           description: Participate in the debates and processes prior to the approval of new regulations or strategies. Your opinion will be considered.
@@ -87,11 +87,17 @@ en:
         proposals_dates: Proposals
     questions:
       comments:
-        comment_button: Publish answer
-        comments_title: Open answers
+        comment_button: "Publish Proposed Amendment"
+        comments_title: "Proposed Amendments"
+        comments_title_help: "Please scrutinise the proposed amendments and comment or vote.<br>You can propose an Amendment at the bottom of this page - please %{link}."
+        comments_title_link: "read the guidelines"
+        comments_title_url: "https://consulproject.org"
         comments_closed: Closed phase
         form:
-          leave_comment: Leave your answer
+          leave_comment_help_text: "Submit your proposed amendemnt in the box below"
+          leave_comment: "Propose an Amendment"
+          error: "Make sure that the amendment is not blank and confirm that you have read the guidelines for submitting an amendment."
+          guidelines: "Please confirm that you have read the guidelines for submitting an amendment."
       question:
         comments:
           zero: No comments

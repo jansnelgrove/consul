@@ -3,10 +3,35 @@
   <% css_id = parent_or_commentable_dom_id(parent_id, commentable) %>
   <div id="js-comment-form-<%= css_id %>" <%= raw("style='display:none'") if toggeable %> class="comment-form">
     <%= form_for Comment.new, remote: true do |f| %>
-      <%= f.text_area :body,
-        id: "comment-body-#{css_id}",
-        maxlength: Comment.body_max_length,
-        label: leave_comment_text(commentable) %>
+      <% if commentable.class == Legislation::Question %>
+        <%= f.label :body, leave_comment_text(commentable), class: "comment-form-label" %>
+
+        <p>
+          <%= sanitize(t("legislation.questions.comments.comments_title_help",
+                          link: link_to(t("legislation.questions.comments.comments_title_link"),
+                                        t("legislation.questions.comments.comments_title_url"),
+                                        target: "_blank")), attributes: %w[href target]) %>
+        </p>
+
+        <%= f.check_box :terms_of_service,
+                        id: "terms_of_service_#{css_id}",
+                        title: t("legislation.questions.comments.form.guidelines"),
+                        label: t("legislation.questions.comments.form.guidelines") %>
+
+        <span class="help-text">
+          <%= t("legislation.questions.comments.form.leave_comment_help_text") %>
+        </span>
+
+        <%= f.text_area :body, id: "comment-body-#{css_id}",
+                               maxlength: Comment.body_max_length,
+                               label: false %>
+      <% else %>
+        <%= f.hidden_field :terms_of_service, value: 1 %>
+
+        <%= f.text_area :body, id: "comment-body-#{css_id}",
+                               maxlength: Comment.body_max_length,
+                               label: leave_comment_text(commentable) %>
+      <% end %>
 
       <%= f.hidden_field :commentable_type, value: commentable.class.name %>
       <%= f.hidden_field :commentable_id, value: commentable.id %>

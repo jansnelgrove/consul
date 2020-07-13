@@ -42,7 +42,8 @@ class Legislation::AnnotationsController < Legislation::BaseController
 
     @annotation = existing_annotation
     if @annotation.present?
-      comment = @annotation.comments.build(body: annotation_params[:text], user: current_user)
+      comment = @annotation.comments.build(body: annotation_params[:text], user: current_user,
+                                           terms_of_service: 1)
       if comment.save
         render json: @annotation.to_json
       else
@@ -80,7 +81,8 @@ class Legislation::AnnotationsController < Legislation::BaseController
   def new_comment
     @draft_version = Legislation::DraftVersion.find(params[:draft_version_id])
     @annotation = @draft_version.annotations.find(params[:annotation_id])
-    @comment = @annotation.comments.new(body: params[:comment][:body], user: current_user)
+    @comment = @annotation.comments.new(body: params[:comment][:body], user: current_user,
+                                        terms_of_service: 1)
     if @comment.save
       @comment = @annotation.comments.new
     end

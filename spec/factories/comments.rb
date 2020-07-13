@@ -3,6 +3,7 @@ FactoryBot.define do
     association :commentable, factory: :debate
     user
     sequence(:body) { |n| "Comment body #{n}" }
+    terms_of_service { "1" }
 
     trait :hidden do
       hidden_at { Time.current }

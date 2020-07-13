@@ -414,6 +414,7 @@ ActiveRecord::Schema.define(version: 20200706110055) do
     t.string   "ancestry"
     t.integer  "confidence_score",   default: 0,     null: false
     t.boolean  "valuation",          default: false
+    t.boolean  "terms_of_service",   default: false
     t.index ["ancestry"], name: "index_comments_on_ancestry", using: :btree
     t.index ["cached_votes_down"], name: "index_comments_on_cached_votes_down", using: :btree
     t.index ["cached_votes_total"], name: "index_comments_on_cached_votes_total", using: :btree

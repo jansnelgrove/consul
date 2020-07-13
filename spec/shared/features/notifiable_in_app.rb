@@ -24,12 +24,17 @@ shared_examples "notifiable in-app" do |factory_name|
   end
 
   scenario "Multiple users commented on my notifiable", :js do
+    checkbox = "terms_of_service_#{notifiable.class.to_param.parameterize(separator: "_")}_#{notifiable.id}"
+
     3.times do |n|
       login_as(create(:user, :verified))
 
       visit path_for(notifiable)
 
       fill_in comment_body(notifiable), with: "Number #{n + 1} is the best!"
+      if page.has_css?("##{checkbox}")
+        check checkbox
+      end
       click_button "publish_comment"
       within "#comments" do
         expect(page).to have_content "Number #{n + 1} is the best!"
@@ -54,6 +59,9 @@ shared_examples "notifiable in-app" do |factory_name|
     click_link "Reply"
     within "#js-comment-form-comment_#{comment.id}" do
       fill_in "comment-body-comment_#{comment.id}", with: "I replied to your comment"
+      if page.has_css?("#terms_of_service_comment_#{comment.id}")
+        check "terms_of_service_comment_#{comment.id}"
+      end
       click_button "Publish reply"
     end
 
@@ -80,6 +88,9 @@ shared_examples "notifiable in-app" do |factory_name|
       within("#comment_#{comment.id}_reply") { click_link "Reply" }
       within "#js-comment-form-comment_#{comment.id}" do
         fill_in "comment-body-comment_#{comment.id}", with: "Reply number #{n}"
+        if page.has_css?("#terms_of_service_comment_#{comment.id}")
+          check "terms_of_service_comment_#{comment.id}"
+        end
         click_button "Publish reply"
       end
 
@@ -98,10 +109,14 @@ shared_examples "notifiable in-app" do |factory_name|
   end
 
   scenario "Author commented on his own notifiable", :js do
+    checkbox = "terms_of_service_#{notifiable.class.to_param.parameterize(separator: "_")}_#{notifiable.id}"
     login_as(author)
     visit path_for(notifiable)
 
     fill_in comment_body(notifiable), with: "I commented on my own notifiable"
+    if page.has_css?("##{checkbox}")
+      check checkbox
+    end
     click_button "publish_comment"
     within "#comments" do
       expect(page).to have_content "I commented on my own notifiable"
@@ -122,6 +137,9 @@ shared_examples "notifiable in-app" do |factory_name|
     click_link "Reply"
     within "#js-comment-form-comment_#{comment.id}" do
       fill_in "comment-body-comment_#{comment.id}", with: "I replied to my own comment"
+      if page.has_css?("#terms_of_service_comment_#{comment.id}")
+        check "terms_of_service_comment_#{comment.id}"
+      end
       click_button "Publish reply"
     end
 

@@ -22,6 +22,7 @@ class Comment < ApplicationRecord
   validates :user, presence: true
 
   validates :commentable_type, inclusion: { in: COMMENTABLE_TYPES }
+  validates :terms_of_service, acceptance: { allow_nil: false }, on: :create
 
   validate :validate_body_length
   validate :comment_valuation, if: -> { valuation }
@@ -60,12 +61,13 @@ class Comment < ApplicationRecord
 
   after_create :call_after_commented
 
-  def self.build(commentable, user, body, p_id = nil, valuation = false)
+  def self.build(commentable, user, body, p_id = nil, valuation = false, terms_of_service)
     new(commentable: commentable,
         user_id:     user.id,
         body:        body,
         parent_id:   p_id,
-        valuation:   valuation)
+        valuation:   valuation,
+        terms_of_service: terms_of_service)
   end
 
   def self.find_commentable(c_type, c_id)

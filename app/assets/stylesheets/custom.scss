@@ -7,3 +7,10 @@
   }
 }
 
+.comments .comment {
+  margin-bottom: $line-height * 2;
+}
+
+.comment-form-label {
+  font-size: rem-calc(24);
+}

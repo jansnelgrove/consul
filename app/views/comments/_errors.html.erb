@@ -1,3 +1,12 @@
-<div data-alert class="callout alert">
-  <%= t("errors.messages.blank").capitalize %>
-</div>
+<% if @commentable.class == Legislation::Question %>
+  <div data-alert class="callout alert" data-closable>
+    <button class="close-button" aria-label="<%= t("application.close") %>" type="button" data-close>
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <%= t("legislation.questions.comments.form.error") %>
+  </div>
+<% else %>
+  <div data-alert class="callout alert">
+    <%= t("errors.messages.blank").capitalize %>
+  </div>
+<% end %>

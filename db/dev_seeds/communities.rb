@@ -17,6 +17,7 @@ section "Commenting Community Topics" do
     Comment.create!(user: author,
                     created_at: rand(topic.created_at..Time.current),
                     commentable: topic,
-                    body: Faker::Lorem.sentence)
+                    body: Faker::Lorem.sentence,
+                    terms_of_service: 1)
   end
 end

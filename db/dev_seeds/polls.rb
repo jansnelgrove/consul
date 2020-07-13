@@ -114,7 +114,8 @@ section "Commenting Polls" do
     Comment.create!(user: author,
                     created_at: rand(poll.created_at..Time.current),
                     commentable: poll,
-                    body: Faker::Lorem.sentence)
+                    body: Faker::Lorem.sentence,
+                    terms_of_service: 1)
   end
 end
 
