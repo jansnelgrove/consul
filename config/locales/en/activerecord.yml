@@ -260,6 +260,8 @@ en:
         recommended_debates: "Show debates recommendations"
         recommended_proposals: "Show proposals recommendations"
         redeemable_code: "Verification code received via email"
+        postcode: "Postcode"
+        country: "Country of residence"
       direct_message:
         title: "Title"
         body: "Message"
