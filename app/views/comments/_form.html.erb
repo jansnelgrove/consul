@@ -3,7 +3,7 @@
   <% css_id = parent_or_commentable_dom_id(parent_id, commentable) %>
   <div id="js-comment-form-<%= css_id %>" <%= raw("style='display:none'") if toggeable %> class="comment-form">
     <%= form_for Comment.new, remote: true do |f| %>
-      <% if commentable.class == Legislation::Question %>
+      <% if commentable.class == Legislation::Question && parent_id == nil %>
         <%= f.label :body, leave_comment_text(commentable), class: "comment-form-label" %>
 
         <p>

@@ -108,7 +108,7 @@ class I18nContent < ApplicationRecord
       legislation.questions.comments.comments_title
       legislation.questions.comments.comments_title_help
       legislation.questions.comments.comments_title_link
-      legislation.questions.comments.comments_title_link_url
+      legislation.questions.comments.comments_title_url
       legislation.questions.comments.comment_button
       legislation.questions.comments.form.leave_comment_help_text
       legislation.questions.comments.form.leave_comment
@@ -116,6 +116,9 @@ class I18nContent < ApplicationRecord
       legislation.questions.comments.form.error
       admin.users.columns.country
       admin.users.columns.postcode
+      legislation.questions.show.title
+      legislation.questions.show.first_question
+      legislation.questions.show.next_question
     ]
   end
 end
