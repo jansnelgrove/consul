@@ -116,6 +116,9 @@ class I18nContent < ApplicationRecord
       legislation.questions.comments.form.error
       admin.users.columns.country
       admin.users.columns.postcode
+      legislation.questions.show.title
+      legislation.questions.show.first_question
+      legislation.questions.show.next_question
     ]
   end
 end
