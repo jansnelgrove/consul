@@ -112,6 +112,7 @@ class I18nContent < ApplicationRecord
       legislation.questions.comments.comment_button
       legislation.questions.comments.form.leave_comment_help_text
       legislation.questions.comments.form.leave_comment
+      legislation.questions.comments.form.leave_reply
       legislation.questions.comments.form.guidelines
       legislation.questions.comments.form.error
       admin.users.columns.country

@@ -23,7 +23,7 @@
 
         <%= f.text_area :body, id: "comment-body-#{css_id}",
                                maxlength: Comment.body_max_length,
-                               label: leave_comment_text(commentable) %>
+                               label: leave_reply_text(commentable) %>
       <% end %>
 
       <%= f.hidden_field :commentable_type, value: commentable.class.name %>

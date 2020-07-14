@@ -15,6 +15,14 @@ module CommentsHelper
     end
   end
 
+  def leave_reply_text(commentable)
+    if commentable.class == Legislation::Question
+      t("legislation.questions.comments.form.leave_reply")
+    else
+      t("comments.form.leave_comment")
+    end
+  end
+
   def comment_link_text(parent_id)
     parent_id.present? ? t("comments_helper.reply_link") : t("comments_helper.comment_link")
   end
