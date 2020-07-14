@@ -6,13 +6,6 @@
       <% if commentable.class == Legislation::Question && parent_id == nil %>
         <%= f.label :body, leave_comment_text(commentable), class: "comment-form-label" %>
 
-        <p>
-          <%= sanitize(t("legislation.questions.comments.comments_title_help",
-                          link: link_to(t("legislation.questions.comments.comments_title_link"),
-                                        t("legislation.questions.comments.comments_title_url"),
-                                        target: "_blank")), attributes: %w[href target]) %>
-        </p>
-
         <%= f.check_box :terms_of_service,
                         id: "terms_of_service_#{css_id}",
                         title: t("legislation.questions.comments.form.guidelines"),

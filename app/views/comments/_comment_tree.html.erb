@@ -13,6 +13,14 @@
             <%= comment_tree_title_text(commentable) %>
             <span class="js-comments-count">(<%= commentable.comments_count %>)</span>
           </h2>
+          <% if commentable.class == Legislation::Question %>
+            <p>
+              <%= sanitize(t("legislation.questions.comments.comments_title_help",
+                              link: link_to(t("legislation.questions.comments.comments_title_link"),
+                                            t("legislation.questions.comments.comments_title_url"),
+                                            target: "_blank")), attributes: %w[href target]) %>
+            </p>
+          <% end %>
         <% end %>
 
         <% comment_tree.root_comments.each do |comment| %>
