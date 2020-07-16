@@ -62,6 +62,8 @@
               <%= t("polls.index.participate_button") %>
             <% end %>
           <% end %>
+          <% answer = poll.questions.first.question_answers.first %>
+          <div><strong><%= t("polls.answer_votes") %><%= answer.total_votes %></strong></div>
         </div>
       </div>
     </div>
