@@ -614,6 +614,7 @@ en:
     no_dates: "no date assigned"
     dates: "From %{open_at} to %{closed_at}"
     final_date: "Final recounts/Results"
+    answer_votes: "Total votes: "
     index:
       filters:
         current: "Open"

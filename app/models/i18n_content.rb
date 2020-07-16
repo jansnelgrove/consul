@@ -120,6 +120,7 @@ class I18nContent < ApplicationRecord
       legislation.questions.show.title
       legislation.questions.show.first_question
       legislation.questions.show.next_question
+      polls.answer_votes
     ]
   end
 end

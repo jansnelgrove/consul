@@ -8,6 +8,7 @@
               title="<%= t("poll_questions.show.voted", answer: answer.title) %>">
           <%= answer.title %>
         </span>
+        <div><strong><%= t("polls.answer_votes") %><%= answer.total_votes %></strong></div>
       <% else %>
         <%= link_to answer.title,
           answer_question_path(question, answer: answer.title, token: token),
@@ -15,6 +16,7 @@
           remote: true,
           title: t("poll_questions.show.vote_answer", answer: answer.title),
           class: "button secondary hollow js-question-answer" %>
+        <div><strong><%= t("polls.answer_votes") %><%= answer.total_votes %></strong></div>
       <% end %>
     <% end %>
   <% elsif !user_signed_in? %>
