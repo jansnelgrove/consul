@@ -41,7 +41,16 @@ module CommentsHelper
 
   def child_comments_of(parent)
     if @comment_tree.present?
-      @comment_tree.ordered_children_of(parent)
+      if parent == @comment_tree.first_comment
+        ordered_children = @comment_tree.ordered_children_of(parent)
+        if ordered_children.size > 0 && parent.children.size > 0
+          ordered_children
+        else
+          parent.children
+        end
+      else
+        @comment_tree.ordered_children_of(parent)
+      end
     else
       parent.children
     end
