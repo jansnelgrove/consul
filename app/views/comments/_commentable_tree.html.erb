@@ -21,16 +21,16 @@
           <%= render "shared/login_to_comment" %>
         <% end %>
 
-        <% if comment_tree.first_comment.present? %>
+        <% if @comment_tree.first_comment.present? %>
           <h3><%= t("legislation.questions.comments.original_version") %></h3>
-          <%= render "comments/comment", { comment: comment_tree.first_comment,
+          <%= render "comments/comment", { comment: @comment_tree.first_comment,
                                            valuation: valuation,
                                            allow_comments: allow_comments } %>
         <% end %>
 
-        <% comment_tree.root_comments.each do |comment| %>
-          <% unless comment == comment_tree.first_comment %>
-            <% section = comment_tree.commentable.title.split(" ").first %>
+        <% @comment_tree.root_comments.each do |comment| %>
+          <% unless comment == @comment_tree.first_comment %>
+            <% section = @comment_tree.commentable.title.split(" ").first %>
             <h3><%= t("legislation.questions.comments.proposed_amendment_for", section: section) %></h3>
             <%= render "comments/comment", { comment: comment,
                                              valuation: valuation,
