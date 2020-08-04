@@ -23,14 +23,29 @@
           <% end %>
         <% end %>
 
-        <% comment_tree.root_comments.each do |comment| %>
-          <%= render "comments/comment", { comment: comment,
+        <% if comment_tree.first_comment.present? %>
+          <h3><%= t("legislation.questions.comments.original_version") %></h3>
+          <%= render "comments/comment", { comment: comment_tree.first_comment,
                                            comment_flags: comment_flags,
                                            valuation: valuation,
                                            allow_votes: !valuation,
                                            allow_actions: !valuation,
                                            allow_comments: allow_comments,
                                            admin_layout: admin_layout } %>
+        <% end %>
+
+        <% comment_tree.root_comments.each do |comment| %>
+          <% unless comment == comment_tree.first_comment %>
+            <% section = comment_tree.commentable.title.split(" ").first %>
+            <h3><%= t("legislation.questions.comments.proposed_amendment_for", section: section) %></h3>
+            <%= render "comments/comment", { comment: comment,
+                                             comment_flags: comment_flags,
+                                             valuation: valuation,
+                                             allow_votes: !valuation,
+                                             allow_actions: !valuation,
+                                             allow_comments: allow_comments,
+                                             admin_layout: admin_layout } %>
+          <% end %>
         <% end %>
 
         <% if user_signed_in? %>

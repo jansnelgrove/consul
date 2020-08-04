@@ -121,6 +121,8 @@ class I18nContent < ApplicationRecord
       legislation.questions.show.first_question
       legislation.questions.show.next_question
       polls.answer_votes
+      legislation.questions.comments.original_version
+      legislation.questions.comments.proposed_amendment_for
     ]
   end
 end

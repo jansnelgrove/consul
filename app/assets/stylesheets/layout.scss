@@ -2169,6 +2169,10 @@ table {
     &.is-moderator {
       background: rgba(45, 144, 248, 0.15);
     }
+
+    &.is-parent {
+      background: rgba(248, 0, 0, 0.15);
+    }
   }
 }
 

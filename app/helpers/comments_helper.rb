@@ -73,6 +73,16 @@ module CommentsHelper
     ""
   end
 
+  def comment_type_class(comment, first_comment)
+    if first_comment
+      "is-author"
+    elsif comment.root?
+      "is-parent"
+    else
+      ""
+    end
+  end
+
   def require_verified_resident_for_commentable?(commentable, current_user)
     return false if current_user.administrator? || current_user.moderator?
 

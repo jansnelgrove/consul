@@ -77,9 +77,12 @@
           </span>
         </div>
 
+        <% first_comment = CommentTree.new(comment.commentable, 1, "newest").first_comment == comment %>
+
         <div class="comment-user
                   <%= user_level_class comment %>
-                  <%= comment_author_class comment, comment.commentable.author_id %>">
+                  <%= comment_author_class comment, comment.commentable.author_id %>
+                  <%= comment_type_class comment, first_comment %>">
           <%= simple_format sanitize_and_auto_link(comment.body), {}, sanitize: false %>
         </div>
 
