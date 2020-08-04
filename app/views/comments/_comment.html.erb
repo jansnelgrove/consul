@@ -88,9 +88,11 @@
 
         <div id="<%= dom_id(comment) %>_reply" class="reply">
           <% if allow_votes %>
-            <div id="<%= dom_id(comment) %>_votes" class="comment-votes float-right">
-              <%= render "comments/votes", comment: comment %>
-            </div>
+            <% if comment.root? %>
+              <div id="<%= dom_id(comment) %>_votes" class="comment-votes float-right">
+                <%= render "comments/votes", comment: comment %>
+              </div>
+            <% end %>
           <% end %>
 
           <% if comment.children.size > 0 %>
