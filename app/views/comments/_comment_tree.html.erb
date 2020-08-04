@@ -11,7 +11,6 @@
         <% if display_comments_count %>
           <h2>
             <%= comment_tree_title_text(commentable) %>
-            <span class="js-comments-count">(<%= commentable.comments_count %>)</span>
           </h2>
           <% if commentable.class == Legislation::Question %>
             <p>
