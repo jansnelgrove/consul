@@ -61,6 +61,7 @@ module CommentsHelper
     else
       "" # Default no special user class
     end
+    ""
   end
 
   def comment_author_class(comment, author_id)
@@ -69,6 +70,7 @@ module CommentsHelper
     else
       "" # Default not author class
     end
+    ""
   end
 
   def require_verified_resident_for_commentable?(commentable, current_user)
