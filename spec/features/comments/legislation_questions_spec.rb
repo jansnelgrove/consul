@@ -146,6 +146,31 @@ describe "Commenting legislation questions" do
     end
   end
 
+  scenario "Show voting only on amendments", :js do
+    user = create(:user)
+    manuela = create(:user, :level_two)
+    comment = create(:comment, commentable: legislation_question, user: user)
+
+    login_as(manuela)
+    visit legislation_process_question_path(legislation_question.process, legislation_question)
+
+    within "#comment_#{comment.id}_votes" do
+      expect(page).to have_css(".votes")
+    end
+
+    click_link "Comment"
+
+    within "#js-comment-form-comment_#{comment.id}" do
+      fill_in "comment-body-comment_#{comment.id}", with: "This is my reply."
+      click_button "Publish comment"
+    end
+
+    within "#comment_#{comment.id}_children" do
+      expect(page).to have_content "This is my reply."
+      expect(page).not_to have_css(".votes")
+    end
+  end
+
   scenario "Creation date works differently in roots and in child comments, even when sorting by confidence_score" do
     old_root = create(:comment, commentable: legislation_question, created_at: Time.current - 10)
     new_root = create(:comment, commentable: legislation_question, created_at: Time.current)
