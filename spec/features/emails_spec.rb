@@ -439,11 +439,11 @@ describe "Emails" do
       login_as(user2)
       visit poll_path(poll)
 
-      click_link "Reply"
+      click_link "Comment"
 
       within "#js-comment-form-comment_#{comment.id}" do
         fill_in "comment-body-comment_#{comment.id}", with: "It will be done next week."
-        click_button "Publish reply"
+        click_button "Publish comment"
       end
 
       within "#comment_#{comment.id}" do
