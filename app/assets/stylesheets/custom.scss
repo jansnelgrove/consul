@@ -7,10 +7,14 @@
   }
 }
 
-.comments .comment {
-  margin-bottom: $line-height * 2;
-}
-
 .comment-form-label {
   font-size: rem-calc(24);
+}
+
+.comment-body .reply {
+
+  [class^="icon-arrow"] {
+    left: -14px;
+    top: -7px;
+  }
 }
