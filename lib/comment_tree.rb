@@ -10,6 +10,10 @@ class CommentTree
     @valuations = valuations
   end
 
+  def first_comment
+    base_comments.roots.sort_by_id.first
+  end
+
   def comments
     @comments ||= root_comments + root_descendants
   end

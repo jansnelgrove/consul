@@ -26,41 +26,41 @@ describe "Legislation" do
       click_link "Question 1"
 
       expect(page).to have_content("Question 1")
-      expect(page).to have_content("Next question")
+      expect(page).to have_content("Next section")
 
-      click_link "Next question"
+      click_link "Next section"
 
       expect(page).to have_content("Question 2")
-      expect(page).to have_content("Next question")
+      expect(page).to have_content("Next section")
 
-      click_link "Next question"
+      click_link "Next section"
 
       expect(page).to have_content("Question 3")
-      expect(page).not_to have_content("Next question")
+      expect(page).not_to have_content("Next section")
     end
 
     scenario "shows question page" do
       visit legislation_process_question_path(process, process.questions.first)
 
       expect(page).to have_content("Question 1")
-      expect(page).to have_content("Proposed Amendments (0)")
+      expect(page).to have_content("Proposed Amendments")
     end
 
     scenario "shows next question link in question page" do
       visit legislation_process_question_path(process, process.questions.first)
 
       expect(page).to have_content("Question 1")
-      expect(page).to have_content("Next question")
+      expect(page).to have_content("Next section")
 
-      click_link "Next question"
+      click_link "Next section"
 
       expect(page).to have_content("Question 2")
-      expect(page).to have_content("Next question")
+      expect(page).to have_content("Next section")
 
-      click_link "Next question"
+      click_link "Next section"
 
       expect(page).to have_content("Question 3")
-      expect(page).not_to have_content("Next question")
+      expect(page).not_to have_content("Next section")
     end
 
     scenario "answer question" do

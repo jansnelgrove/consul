@@ -115,6 +115,62 @@ describe "Commenting legislation questions" do
     expect(c2.body).to appear_before(c3.body)
   end
 
+  scenario "First comment always appear the first one" do
+    legislation_process = create :legislation_process, :in_debate_phase
+    question = create :legislation_question, process: legislation_process, title: "1.1 First question"
+    first_comment = create(:comment, commentable: question)
+
+    per_page = 10
+    (per_page + 2).times { create(:comment, commentable: question) }
+
+    visit legislation_process_question_path(question.process, question)
+
+    within first(".comment") do
+      expect(page).to have_content first_comment.body
+    end
+
+    expect(page).to have_content("Original Version", count: 1)
+    expect(page).to have_content("Proposed Amendment to Section 1.1", count: 10)
+    expect(page).to have_css(".comment", count: 11)
+
+    within("ul.pagination") do
+      click_link "Next", exact: false
+    end
+
+    expect(page).to have_content("Original Version", count: 1)
+    expect(page).to have_content("Proposed Amendment to Section 1.1", count: 2)
+    expect(page).to have_css(".comment", count: 3)
+
+    within first(".comment") do
+      expect(page).to have_content first_comment.body
+    end
+  end
+
+  scenario "Show voting only on amendments", :js do
+    user = create(:user)
+    manuela = create(:user, :level_two)
+    comment = create(:comment, commentable: legislation_question, user: user)
+
+    login_as(manuela)
+    visit legislation_process_question_path(legislation_question.process, legislation_question)
+
+    within "#comment_#{comment.id}_votes" do
+      expect(page).to have_css(".votes")
+    end
+
+    click_link "Comment"
+
+    within "#js-comment-form-comment_#{comment.id}" do
+      fill_in "comment-body-comment_#{comment.id}", with: "This is my reply."
+      click_button "Publish comment"
+    end
+
+    within "#comment_#{comment.id}_children" do
+      expect(page).to have_content "This is my reply."
+      expect(page).not_to have_css(".votes")
+    end
+  end
+
   scenario "Creation date works differently in roots and in child comments, even when sorting by confidence_score" do
     old_root = create(:comment, commentable: legislation_question, created_at: Time.current - 10)
     new_root = create(:comment, commentable: legislation_question, created_at: Time.current)
@@ -243,12 +299,12 @@ describe "Commenting legislation questions" do
     login_as(manuela)
     visit legislation_process_question_path(legislation_question.process, legislation_question)
 
-    click_link "Reply"
+    click_link "Comment"
 
     within "#js-comment-form-comment_#{comment.id}" do
       fill_in "comment-body-comment_#{comment.id}", with: "It will be done next week."
       check "terms_of_service_comment_#{comment.id}"
-      click_button "Publish reply"
+      click_button "Publish comment"
     end
 
     within "#comment_#{comment.id}" do
@@ -264,10 +320,10 @@ describe "Commenting legislation questions" do
     login_as(user)
     visit legislation_process_question_path(legislation_question.process, legislation_question)
 
-    click_link "Reply"
+    click_link "Comment"
 
     within "#js-comment-form-comment_#{comment.id}" do
-      click_button "Publish reply"
+      click_button "Publish comment"
       expect(page).to have_content "Make sure that the amendment is not blank and confirm that you have "\
                                    "read the guidelines for submitting an amendment."
     end
@@ -373,7 +429,7 @@ describe "Commenting legislation questions" do
       within "#comments" do
         expect(page).to have_content "I am moderating!"
         expect(page).to have_content "Moderator ##{moderator.id}"
-        expect(page).to have_css "div.is-moderator"
+        #expect(page).to have_css "div.is-moderator"
         expect(page).to have_css "img.moderator-avatar"
       end
     end
@@ -387,19 +443,19 @@ describe "Commenting legislation questions" do
       login_as(manuela)
       visit legislation_process_question_path(legislation_question.process, legislation_question)
 
-      click_link "Reply"
+      click_link "Comment"
 
       within "#js-comment-form-comment_#{comment.id}" do
         fill_in "comment-body-comment_#{comment.id}", with: "I am moderating!"
         check "comment-as-moderator-comment_#{comment.id}"
         check "terms_of_service_comment_#{comment.id}"
-        click_button "Publish reply"
+        click_button "Publish comment"
       end
 
       within "#comment_#{comment.id}" do
         expect(page).to have_content "I am moderating!"
         expect(page).to have_content "Moderator ##{moderator.id}"
-        expect(page).to have_css "div.is-moderator"
+        #expect(page).to have_css "div.is-moderator"
         expect(page).to have_css "img.moderator-avatar"
       end
 
@@ -431,7 +487,7 @@ describe "Commenting legislation questions" do
       within "#comments" do
         expect(page).to have_content "I am your Admin!"
         expect(page).to have_content "Administrator ##{admin.id}"
-        expect(page).to have_css "div.is-admin"
+        #expect(page).to have_css "div.is-admin"
         expect(page).to have_css "img.admin-avatar"
       end
     end
@@ -445,19 +501,19 @@ describe "Commenting legislation questions" do
       login_as(manuela)
       visit legislation_process_question_path(legislation_question.process, legislation_question)
 
-      click_link "Reply"
+      click_link "Comment"
 
       within "#js-comment-form-comment_#{comment.id}" do
         fill_in "comment-body-comment_#{comment.id}", with: "Top of the world!"
         check "comment-as-administrator-comment_#{comment.id}"
         check "terms_of_service_comment_#{comment.id}"
-        click_button "Publish reply"
+        click_button "Publish comment"
       end
 
       within "#comment_#{comment.id}" do
         expect(page).to have_content "Top of the world!"
         expect(page).to have_content "Administrator ##{admin.id}"
-        expect(page).to have_css "div.is-admin"
+        #expect(page).to have_css "div.is-admin"
         expect(page).to have_css "img.admin-avatar"
       end
 

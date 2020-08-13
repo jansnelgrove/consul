@@ -57,6 +57,8 @@ class Comment < ApplicationRecord
   scope :sort_by_oldest, -> { order(created_at: :asc) }
   scope :sort_descendants_by_oldest, -> { order(created_at: :asc) }
 
+  scope :sort_by_id, -> { order(id: :asc) }
+
   scope :not_valuations, -> { where(valuation: false) }
 
   after_create :call_after_commented

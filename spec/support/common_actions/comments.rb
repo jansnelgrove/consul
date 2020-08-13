@@ -15,10 +15,10 @@ module Comments
     login_as(manuela)
     visit debate_path(debate)
 
-    click_link "Reply"
+    click_link "Comment"
     within "#js-comment-form-comment_#{comment.id}" do
       fill_in "comment-body-comment_#{comment.id}", with: "It will be done next week."
-      click_button "Publish reply"
+      click_button "Publish comment"
     end
     expect(page).to have_content "It will be done next week."
   end

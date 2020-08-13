@@ -56,13 +56,13 @@ shared_examples "notifiable in-app" do |factory_name|
     login_as(create(:user, :verified))
     visit path_for(notifiable)
 
-    click_link "Reply"
+    click_link "Comment"
     within "#js-comment-form-comment_#{comment.id}" do
       fill_in "comment-body-comment_#{comment.id}", with: "I replied to your comment"
       if page.has_css?("#terms_of_service_comment_#{comment.id}")
         check "terms_of_service_comment_#{comment.id}"
       end
-      click_button "Publish reply"
+      click_button "Publish comment"
     end
 
     within "#comment_#{comment.id}" do
@@ -85,13 +85,13 @@ shared_examples "notifiable in-app" do |factory_name|
       login_as(create(:user, :verified))
       visit path_for(notifiable)
 
-      within("#comment_#{comment.id}_reply") { click_link "Reply" }
+      within("#comment_#{comment.id}_reply") { click_link "Comment" }
       within "#js-comment-form-comment_#{comment.id}" do
         fill_in "comment-body-comment_#{comment.id}", with: "Reply number #{n}"
         if page.has_css?("#terms_of_service_comment_#{comment.id}")
           check "terms_of_service_comment_#{comment.id}"
         end
-        click_button "Publish reply"
+        click_button "Publish comment"
       end
 
       within "#comment_#{comment.id}" do
@@ -134,13 +134,13 @@ shared_examples "notifiable in-app" do |factory_name|
     login_as author
     visit path_for(notifiable)
 
-    click_link "Reply"
+    click_link "Comment"
     within "#js-comment-form-comment_#{comment.id}" do
       fill_in "comment-body-comment_#{comment.id}", with: "I replied to my own comment"
       if page.has_css?("#terms_of_service_comment_#{comment.id}")
         check "terms_of_service_comment_#{comment.id}"
       end
-      click_button "Publish reply"
+      click_button "Publish comment"
     end
 
     within "#comment_#{comment.id}" do

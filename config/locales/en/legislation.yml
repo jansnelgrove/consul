@@ -92,11 +92,13 @@ en:
         comments_title_help: "Please scrutinise the proposed amendments and comment or vote.<br>You can propose an Amendment at the bottom of this page - please %{link}."
         comments_title_link: "read the guidelines"
         comments_title_url: "/guidelines"
+        original_version: "Original Version"
+        proposed_amendment_for: "Proposed Amendment to Section %{section}"
         comments_closed: Closed phase
         form:
           leave_comment_help_text: "Submit your proposed amendemnt in the box below"
           leave_comment: "Propose an Amendment"
-          leave_reply: "Write your reply"
+          leave_reply: "Write your comment"
           error: "Make sure that the amendment is not blank and confirm that you have read the guidelines for submitting an amendment."
           guidelines: "Please confirm that you have read the guidelines for submitting an amendment."
       question:

@@ -62,7 +62,7 @@
             <% end %>
             <% if comment.user_id == comment.commentable.author_id %>
               &nbsp;&bull;&nbsp;
-              <span class="label round is-author">
+              <span class="label round">
                 <%= t("comments.comment.author") %>
               </span>
             <% end %>
@@ -77,17 +77,22 @@
           </span>
         </div>
 
+        <% first_comment = CommentTree.new(comment.commentable, 1, "newest").first_comment == comment %>
+
         <div class="comment-user
                   <%= user_level_class comment %>
-                  <%= comment_author_class comment, comment.commentable.author_id %>">
+                  <%= comment_author_class comment, comment.commentable.author_id %>
+                  <%= comment_type_class comment, first_comment %>">
           <%= simple_format sanitize_and_auto_link(comment.body), {}, sanitize: false %>
         </div>
 
         <div id="<%= dom_id(comment) %>_reply" class="reply">
           <% if allow_votes %>
-            <div id="<%= dom_id(comment) %>_votes" class="comment-votes float-right">
-              <%= render "comments/votes", comment: comment %>
-            </div>
+            <% if comment.root? %>
+              <div id="<%= dom_id(comment) %>_votes" class="comment-votes float-right">
+                <%= render "comments/votes", comment: comment %>
+              </div>
+            <% end %>
           <% end %>
 
           <% if comment.children.size > 0 %>
