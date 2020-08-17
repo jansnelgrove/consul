@@ -34,7 +34,7 @@
         <% end %>
 
         <% comment_tree.root_comments.each do |comment| %>
-          <% unless comment == comment_tree.first_comment %>
+          <% unless comment == comment_tree.first_comment || comment.hidden? %>
             <% section = comment_tree.commentable.title.split(" ").first %>
             <h3><%= t("legislation.questions.comments.proposed_amendment_for", section: section) %></h3>
             <%= render "comments/comment", { comment: comment,
