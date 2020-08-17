@@ -32,7 +32,7 @@ describe "Moderate budget investments" do
 
     accept_confirm { click_link "Hide author" }
 
-    expect(page).to have_current_path(debates_path)
+    expect(page).to have_current_path(root_path)
 
     visit budget_investments_path(budget.id, heading_id: heading.id)
 

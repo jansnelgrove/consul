@@ -206,7 +206,7 @@ describe "Admin activity" do
       within("#proposal_#{proposal.id}") do
         click_link "Hide author"
 
-        expect(page).to have_current_path(debates_path)
+        expect(page).to have_current_path(root_path)
       end
 
       visit admin_activity_path
