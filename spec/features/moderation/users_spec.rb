@@ -27,7 +27,7 @@ describe "Moderate users" do
       click_link "Hide author"
     end
 
-    expect(page).to have_current_path(debates_path)
+    expect(page).to have_current_path(root_path)
     expect(page).not_to have_content(debate1.title)
     expect(page).not_to have_content(debate2.title)
     expect(page).to have_content(debate3.title)
