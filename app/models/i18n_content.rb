@@ -125,6 +125,9 @@ class I18nContent < ApplicationRecord
       legislation.questions.comments.proposed_amendment_for
       comments_helper.reply_button
       comments_helper.reply_link
+      devise_views.users.registrations.new.help
+      devise_views.users.registrations.new.help_link
+      devise_views.users.registrations.new.help_url
     ]
   end
 end

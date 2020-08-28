@@ -18,3 +18,8 @@
     top: -7px;
   }
 }
+
+.auth-form .signup-help-link p,
+.auth-form .signup-help-link a {
+  font-size: $base-font-size;
+}

@@ -1,6 +1,16 @@
 <% provide :title do %><%= t("devise_views.users.registrations.new.title") %><% end %>
 <h2><%= t("devise_views.users.registrations.new.title") %></h2>
 
+<div class="signup-help-link margin">
+  <strong>
+    <%= sanitize(t("devise_views.users.registrations.new.help",
+                    link: link_to(t("devise_views.users.registrations.new.help_link"),
+                                  t("devise_views.users.registrations.new.help_url"),
+                                  target: "_blank")),
+                                  attributes: %w[href target]) %>
+  </strong>
+</div>
+
 <%= render "devise/omniauth_form" %>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>

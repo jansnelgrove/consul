@@ -123,6 +123,9 @@ en:
           username_note: Name that appears next to your posts
           postcode_note: "If you are a Citizen of Scotland please enter your postcode in the box, otherwise leave blank. This is for purposes of statistical & administrative detail and will not be published."
           country_note: "Please enter your country of residence"
+          help: "For help with registration please see %{link}."
+          help_link: "this guidance page"
+          help_url: "https://constitutionforscotland.scot/guide-to-registering/"
         success:
           back_to_index: I understand; go back to main page
           instructions_1: Please <b>check your email</b> - we have sent you a <b>link to confirm your account</b>.
