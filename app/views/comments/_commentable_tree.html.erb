@@ -30,15 +30,13 @@
 
         <% @comment_tree.root_comments.each do |comment| %>
           <% unless comment == @comment_tree.first_comment || comment.hidden? %>
-            <% section = @comment_tree.commentable.title.split(" ").second %>
+            <% section = @comment_tree.commentable.title.truncate_words(2, omission: "") %>
             <h3><%= t("legislation.questions.comments.proposed_amendment_for", section: section) %></h3>
             <%= render "comments/comment", { comment: comment,
                                              valuation: valuation,
                                              allow_comments: allow_comments } %>
           <% end %>
         <% end %>
-
-
 
         <%= paginate @comment_tree.root_comments %>
       </div>
