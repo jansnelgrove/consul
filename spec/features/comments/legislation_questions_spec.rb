@@ -17,7 +17,7 @@ describe "Commenting legislation questions" do
 
     expect(page).to have_css(".comment", count: 3)
 
-    comment = Comment.last
+    comment = Comment.first
     within first(".comment") do
       expect(page).to have_content comment.user.name
       expect(page).to have_content I18n.l(comment.created_at, format: :datetime)
@@ -114,8 +114,8 @@ describe "Commenting legislation questions" do
 
     visit legislation_process_question_path(legislation_question.process, legislation_question, order: :newest)
 
+    expect(c1.body).to appear_before(c2.body)
     expect(c3.body).to appear_before(c2.body)
-    expect(c2.body).to appear_before(c1.body)
 
     visit legislation_process_question_path(legislation_question.process, legislation_question, order: :oldest)
 
@@ -191,12 +191,12 @@ describe "Commenting legislation questions" do
 
     visit legislation_process_question_path(legislation_question.process, legislation_question, order: :most_voted)
 
-    expect(new_root.body).to appear_before(old_root.body)
+    expect(old_root.body).to appear_before(new_root.body)
     expect(old_child.body).to appear_before(new_child.body)
 
     visit legislation_process_question_path(legislation_question.process, legislation_question, order: :newest)
 
-    expect(new_root.body).to appear_before(old_root.body)
+    expect(old_root.body).to appear_before(new_root.body)
     expect(new_child.body).to appear_before(old_child.body)
 
     visit legislation_process_question_path(legislation_question.process, legislation_question, order: :oldest)
@@ -333,7 +333,6 @@ describe "Commenting legislation questions" do
 
     within "#js-comment-form-comment_#{comment.id}" do
       fill_in "comment-body-comment_#{comment.id}", with: "It will be done next week."
-      check "terms_of_service_comment_#{comment.id}"
       click_button "Publish comment"
     end
 
@@ -483,7 +482,6 @@ describe "Commenting legislation questions" do
       within "#js-comment-form-comment_#{comment.id}" do
         fill_in "comment-body-comment_#{comment.id}", with: "I am moderating!"
         check "comment-as-moderator-comment_#{comment.id}"
-        check "terms_of_service_comment_#{comment.id}"
         click_button "Publish comment"
       end
 
@@ -542,7 +540,6 @@ describe "Commenting legislation questions" do
       within "#js-comment-form-comment_#{comment.id}" do
         fill_in "comment-body-comment_#{comment.id}", with: "Top of the world!"
         check "comment-as-administrator-comment_#{comment.id}"
-        check "terms_of_service_comment_#{comment.id}"
         click_button "Publish comment"
       end
 

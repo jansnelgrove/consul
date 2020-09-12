@@ -18,18 +18,21 @@ RSpec.describe CommentsHelper, type: :helper do
     end
 
     it "returns is-admin for comment done as administrator" do
+      skip "Do not highlight comments depending on the author"
       comment = comment_double(as_administrator: true)
 
       expect(helper.user_level_class(comment)).to eq("is-admin")
     end
 
     it "returns is-moderator for comment done as moderator" do
+      skip "Do not highlight comments depending on the author"
       comment = comment_double(as_moderator: true)
 
       expect(helper.user_level_class(comment)).to eq("is-moderator")
     end
 
     it "returns level followed by official level if user is official" do
+      skip "Do not highlight comments depending on the author"
       comment = comment_double(official: true)
 
       expect(helper.user_level_class(comment)).to eq("level-Y")
@@ -44,6 +47,7 @@ RSpec.describe CommentsHelper, type: :helper do
 
   describe "#comment_author_class" do
     it "returns is-author if author is the commenting user" do
+      skip "Do not highlight comments depending on the author"
       author_id = 42
       comment = instance_double("Comment", user_id: author_id)
 

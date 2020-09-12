@@ -431,6 +431,7 @@ describe "Emails" do
 
   context "Polls" do
     scenario "Send email on poll comment reply", :js do
+      skip "Comments disabled in polls"
       user1 = create(:user, email_on_comment_reply: true)
       user2 = create(:user)
       poll = create(:poll, author: create(:user))

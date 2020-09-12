@@ -53,6 +53,7 @@ describe "Legislation" do
     end
 
     scenario "Participation phases are displayed only if there is a phase enabled" do
+      skip "Hide phases on custom content"
       process = create(:legislation_process, :empty)
       process_debate = create(:legislation_process)
 
@@ -66,6 +67,7 @@ describe "Legislation" do
     end
 
     scenario "Participation phases are displayed on current locale" do
+      skip "Hide phases on custom content"
       process = create(:legislation_process, proposals_phase_start_date: Date.new(2018, 01, 01),
                                              proposals_phase_end_date: Date.new(2018, 12, 01))
 
@@ -134,6 +136,7 @@ describe "Legislation" do
       include_examples "not published permissions", :legislation_process_path
 
       scenario "show view has document present on all phases" do
+        skip "Hide phases on custom content"
         process = create(:legislation_process)
         document = create(:document, documentable: process)
         phases = ["Debate", "Proposals", "Comments"]
@@ -375,6 +378,7 @@ describe "Legislation" do
       let(:process) { create(:legislation_process, :upcoming_proposals_phase) }
 
       scenario "Without milestones" do
+        skip "Hide phases on custom content"
         visit legislation_process_path(process)
 
         within(".legislation-process-list") do
@@ -383,6 +387,7 @@ describe "Legislation" do
       end
 
       scenario "With milestones" do
+        skip "Hide phases on custom content"
         create(:milestone,
                milestoneable:    process,
                description:      "Something important happened",

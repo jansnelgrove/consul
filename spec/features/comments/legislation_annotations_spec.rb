@@ -233,7 +233,6 @@ describe "Commenting legislation questions" do
 
     within "#comments" do
       expect(page).to have_content "Have you thought about...?"
-      expect(page).to have_content "(2)"
     end
   end
 
