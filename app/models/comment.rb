@@ -19,6 +19,7 @@ class Comment < ApplicationRecord
   include Globalizable
 
   validates_translation :body, presence: true
+  validates :subject, presence: true, if: :comment_legislation_question?
   validates :user, presence: true
 
   validates :commentable_type, inclusion: { in: COMMENTABLE_TYPES }
@@ -63,13 +64,14 @@ class Comment < ApplicationRecord
 
   after_create :call_after_commented
 
-  def self.build(commentable, user, body, p_id = nil, valuation = false, terms_of_service)
+  def self.build(commentable, user, body, p_id = nil, valuation = false, terms_of_service, subject)
     new(commentable: commentable,
         user_id:     user.id,
         body:        body,
         parent_id:   p_id,
         valuation:   valuation,
-        terms_of_service: terms_of_service)
+        terms_of_service: terms_of_service,
+        subject: subject)
   end
 
   def self.find_commentable(c_type, c_id)
@@ -146,5 +148,9 @@ class Comment < ApplicationRecord
       unless author.can?(:comment_valuation, commentable)
         errors.add(:valuation, :cannot_comment_valuation)
       end
+    end
+
+    def comment_legislation_question?
+      commentable.class == Legislation::Question
     end
 end

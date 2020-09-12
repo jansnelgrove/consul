@@ -84,6 +84,9 @@
                   <%= comment_author_class comment, comment.commentable.author_id %>
                   <%= comment_type_class comment, first_comment %>">
           <%= simple_format sanitize_and_auto_link(comment.body), {}, sanitize: false %>
+          <% if comment.root? && comment.commentable.class == Legislation::Question %>
+            <p><strong><%= comment.subject %></strong></p>
+          <% end %>
         </div>
 
         <div id="<%= dom_id(comment) %>_reply" class="reply">

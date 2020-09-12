@@ -11,7 +11,7 @@ describe "Commenting legislation questions" do
   end
 
   scenario "Index" do
-    3.times { create(:comment, commentable: legislation_question) }
+    3.times { create(:comment, commentable: legislation_question, subject: "Headline") }
 
     visit legislation_process_question_path(legislation_question.process, legislation_question)
 
@@ -26,9 +26,11 @@ describe "Commenting legislation questions" do
   end
 
   scenario "Show" do
-    parent_comment = create(:comment, commentable: legislation_question)
-    first_child    = create(:comment, commentable: legislation_question, parent: parent_comment)
-    second_child   = create(:comment, commentable: legislation_question, parent: parent_comment)
+    parent_comment = create(:comment, commentable: legislation_question, subject: "Headline")
+    first_child    = create(:comment, commentable: legislation_question,
+                                      parent: parent_comment, subject: "Headline")
+    second_child   = create(:comment, commentable: legislation_question,
+                                      parent: parent_comment, subject: "Headline")
     href           = legislation_process_question_path(legislation_question.process, legislation_question)
 
     visit comment_path(parent_comment)
@@ -46,7 +48,7 @@ describe "Commenting legislation questions" do
   end
 
   scenario "Link to comment show" do
-    comment = create(:comment, commentable: legislation_question, user: user)
+    comment = create(:comment, commentable: legislation_question, user: user, subject: "Headline")
 
     visit legislation_process_question_path(legislation_question.process, legislation_question)
 
@@ -61,9 +63,12 @@ describe "Commenting legislation questions" do
   end
 
   scenario "Collapsable comments", :js do
-    parent_comment = create(:comment, body: "Main comment", commentable: legislation_question)
-    child_comment  = create(:comment, body: "First subcomment", commentable: legislation_question, parent: parent_comment)
-    grandchild_comment = create(:comment, body: "Last subcomment", commentable: legislation_question, parent: child_comment)
+    parent_comment = create(:comment, body: "Main comment",
+                                      commentable: legislation_question, subject: "Headline")
+    child_comment  = create(:comment, body: "First subcomment", commentable: legislation_question,
+                                      parent: parent_comment, subject: "Headline")
+    grandchild_comment = create(:comment, body: "Last subcomment", commentable: legislation_question,
+                                          parent: child_comment, subject: "Headline")
 
     visit legislation_process_question_path(legislation_question.process, legislation_question)
 
@@ -93,11 +98,14 @@ describe "Commenting legislation questions" do
 
   scenario "Comment order" do
     c1 = create(:comment, :with_confidence_score, commentable: legislation_question, cached_votes_up: 100,
-                                                  cached_votes_total: 120, created_at: Time.current - 2)
+                                                  cached_votes_total: 120, created_at: Time.current - 2,
+                                                  subject: "Headline")
     c2 = create(:comment, :with_confidence_score, commentable: legislation_question, cached_votes_up: 10,
-                                                  cached_votes_total: 12, created_at: Time.current - 1)
+                                                  cached_votes_total: 12, created_at: Time.current - 1,
+                                                  subject: "Headline")
     c3 = create(:comment, :with_confidence_score, commentable: legislation_question, cached_votes_up: 1,
-                                                  cached_votes_total: 2, created_at: Time.current)
+                                                  cached_votes_total: 2, created_at: Time.current,
+                                                  subject: "Headline")
 
     visit legislation_process_question_path(legislation_question.process, legislation_question, order: :most_voted)
 
@@ -117,11 +125,11 @@ describe "Commenting legislation questions" do
 
   scenario "First comment always appear the first one" do
     legislation_process = create :legislation_process, :in_debate_phase
-    question = create :legislation_question, process: legislation_process, title: "1.1 First question"
-    first_comment = create(:comment, commentable: question)
+    question = create :legislation_question, process: legislation_process, title: "Section 1.1 First question"
+    first_comment = create(:comment, commentable: question, subject: "Headline")
 
     per_page = 10
-    (per_page + 2).times { create(:comment, commentable: question) }
+    (per_page + 2).times { create(:comment, commentable: question, subject: "Headline") }
 
     visit legislation_process_question_path(question.process, question)
 
@@ -149,7 +157,7 @@ describe "Commenting legislation questions" do
   scenario "Show voting only on amendments", :js do
     user = create(:user)
     manuela = create(:user, :level_two)
-    comment = create(:comment, commentable: legislation_question, user: user)
+    comment = create(:comment, commentable: legislation_question, user: user, subject: "Headline")
 
     login_as(manuela)
     visit legislation_process_question_path(legislation_question.process, legislation_question)
@@ -172,10 +180,14 @@ describe "Commenting legislation questions" do
   end
 
   scenario "Creation date works differently in roots and in child comments, even when sorting by confidence_score" do
-    old_root = create(:comment, commentable: legislation_question, created_at: Time.current - 10)
-    new_root = create(:comment, commentable: legislation_question, created_at: Time.current)
-    old_child = create(:comment, commentable: legislation_question, parent_id: new_root.id, created_at: Time.current - 10)
-    new_child = create(:comment, commentable: legislation_question, parent_id: new_root.id, created_at: Time.current)
+    old_root = create(:comment, commentable: legislation_question, created_at: Time.current - 10,
+                                subject: "Headline")
+    new_root = create(:comment, commentable: legislation_question, created_at: Time.current,
+                                subject: "Headline")
+    old_child = create(:comment, commentable: legislation_question, parent_id: new_root.id,
+                                 created_at: Time.current - 10, subject: "Headline")
+    new_child = create(:comment, commentable: legislation_question, parent_id: new_root.id,
+                                 created_at: Time.current, subject: "Headline")
 
     visit legislation_process_question_path(legislation_question.process, legislation_question, order: :most_voted)
 
@@ -194,7 +206,8 @@ describe "Commenting legislation questions" do
   end
 
   scenario "Turns links into html links" do
-    create :comment, commentable: legislation_question, body: "Built with http://rubyonrails.org/"
+    create :comment, commentable: legislation_question, body: "Built with http://rubyonrails.org/",
+                     subject: "Headline"
 
     visit legislation_process_question_path(legislation_question.process, legislation_question)
 
@@ -207,7 +220,7 @@ describe "Commenting legislation questions" do
   end
 
   scenario "Sanitizes comment body for security" do
-    create :comment, commentable: legislation_question,
+    create :comment, commentable: legislation_question, subject: "Headline",
                      body: "<script>alert('hola')</script> <a href=\"javascript:alert('sorpresa!')\">click me<a/> http://www.url.com"
 
     visit legislation_process_question_path(legislation_question.process, legislation_question)
@@ -221,11 +234,11 @@ describe "Commenting legislation questions" do
 
   scenario "Paginated comments" do
     per_page = 10
-    (per_page + 2).times { create(:comment, commentable: legislation_question) }
+    (per_page + 2).times { create(:comment, commentable: legislation_question, subject: "Headline") }
 
     visit legislation_process_question_path(legislation_question.process, legislation_question)
 
-    expect(page).to have_css(".comment", count: per_page)
+    expect(page).to have_css(".comment", count: per_page + 1)
     within("ul.pagination") do
       expect(page).to have_content("1")
       expect(page).to have_content("2")
@@ -238,7 +251,7 @@ describe "Commenting legislation questions" do
 
   describe "Not logged user" do
     scenario "can not see comments forms" do
-      create(:comment, commentable: legislation_question)
+      create(:comment, commentable: legislation_question, subject: "Headline")
       visit legislation_process_question_path(legislation_question.process, legislation_question)
 
       expect(page).to have_content "You must sign in or sign up to leave a comment"
@@ -253,13 +266,30 @@ describe "Commenting legislation questions" do
     login_as(user)
     visit legislation_process_question_path(legislation_question.process, legislation_question)
 
+    fill_in "comment_headline_legislation_question_#{legislation_question.id}", with: "Headline"
     fill_in "comment-body-legislation_question_#{legislation_question.id}", with: "Have you thought about...?"
     check "terms_of_service_legislation_question_#{legislation_question.id}"
     click_button "Publish Proposed Amendment"
 
     within "#comments" do
       expect(page).to have_content "Have you thought about...?"
-      expect(page).to have_content "(1)"
+      expect(page).to have_content "Headline"
+    end
+  end
+
+  scenario "Show headline and section title", :js do
+    login_as(user)
+    headline = create(:legislation_question, process: process, title: "Section 10.1. Constitutional")
+    visit legislation_process_question_path(legislation_question.process, headline)
+
+    fill_in "comment_headline_legislation_question_#{headline.id}", with: "Awesome Headline"
+    fill_in "comment-body-legislation_question_#{headline.id}", with: "Have you thought about...?"
+    check "terms_of_service_legislation_question_#{headline.id}"
+    click_button "Publish Proposed Amendment"
+
+    within "#comments" do
+      expect(page).to have_content "Awesome Headline"
+      expect(page).to have_content "Section 10.1. Have you thought about...?"
     end
   end
 
@@ -294,7 +324,7 @@ describe "Commenting legislation questions" do
   scenario "Reply", :js do
     citizen = create(:user, username: "Ana")
     manuela = create(:user, :level_two, username: "Manuela")
-    comment = create(:comment, commentable: legislation_question, user: citizen)
+    comment = create(:comment, commentable: legislation_question, user: citizen, subject: "Headline")
 
     login_as(manuela)
     visit legislation_process_question_path(legislation_question.process, legislation_question)
@@ -315,7 +345,7 @@ describe "Commenting legislation questions" do
   end
 
   scenario "Errors on reply", :js do
-    comment = create(:comment, commentable: legislation_question, user: user)
+    comment = create(:comment, commentable: legislation_question, user: user, subject: "Headline")
 
     login_as(user)
     visit legislation_process_question_path(legislation_question.process, legislation_question)
@@ -330,10 +360,10 @@ describe "Commenting legislation questions" do
   end
 
   scenario "N replies", :js do
-    parent = create(:comment, commentable: legislation_question)
+    parent = create(:comment, commentable: legislation_question, subject: "Headline")
 
     7.times do
-      create(:comment, commentable: legislation_question, parent: parent)
+      create(:comment, commentable: legislation_question, parent: parent, subject: "Headline")
       parent = parent.children.first
     end
 
@@ -342,7 +372,7 @@ describe "Commenting legislation questions" do
   end
 
   scenario "Flagging as inappropriate", :js do
-    comment = create(:comment, commentable: legislation_question)
+    comment = create(:comment, commentable: legislation_question, subject: "Headline")
 
     login_as(user)
     visit legislation_process_question_path(legislation_question.process, legislation_question)
@@ -358,7 +388,7 @@ describe "Commenting legislation questions" do
   end
 
   scenario "Undoing flagging as inappropriate", :js do
-    comment = create(:comment, commentable: legislation_question)
+    comment = create(:comment, commentable: legislation_question, subject: "Headline")
     Flag.flag(user, comment)
 
     login_as(user)
@@ -376,7 +406,7 @@ describe "Commenting legislation questions" do
 
   scenario "Flagging turbolinks sanity check", :js do
     legislation_question = create(:legislation_question, process: process, title: "Should we change the world?")
-    comment = create(:comment, commentable: legislation_question)
+    comment = create(:comment, commentable: legislation_question, subject: "Headline")
 
     login_as(user)
     visit legislation_process_path(legislation_question.process)
@@ -389,7 +419,8 @@ describe "Commenting legislation questions" do
   end
 
   scenario "Erasing a comment's author" do
-    comment = create(:comment, commentable: legislation_question, body: "this should be visible")
+    comment = create(:comment, commentable: legislation_question, body: "this should be visible",
+                               subject: "Headline")
     comment.user.erase
 
     visit legislation_process_question_path(legislation_question.process, legislation_question)
@@ -403,6 +434,7 @@ describe "Commenting legislation questions" do
     login_as(user)
     visit legislation_process_question_path(legislation_question.process, legislation_question)
 
+    fill_in "comment_headline_legislation_question_#{legislation_question.id}", with: "Headline"
     fill_in "comment-body-legislation_question_#{legislation_question.id}", with: "Testing submit button!"
     check "terms_of_service_legislation_question_#{legislation_question.id}"
     click_button "Publish Proposed Amendment"
@@ -411,6 +443,7 @@ describe "Commenting legislation questions" do
     # This should be checked before the Ajax request is finished
     expect(page).not_to have_button "Publish Proposed Amendment"
 
+    expect(page).to have_content("Headline")
     expect(page).to have_content("Testing submit button!")
   end
 
@@ -421,12 +454,14 @@ describe "Commenting legislation questions" do
       login_as(moderator.user)
       visit legislation_process_question_path(legislation_question.process, legislation_question)
 
+      fill_in "comment_headline_legislation_question_#{legislation_question.id}", with: "Headline"
       fill_in "comment-body-legislation_question_#{legislation_question.id}", with: "I am moderating!"
       check "comment-as-moderator-legislation_question_#{legislation_question.id}"
       check "terms_of_service_legislation_question_#{legislation_question.id}"
       click_button "Publish Proposed Amendment"
 
       within "#comments" do
+        expect(page).to have_content "Headline"
         expect(page).to have_content "I am moderating!"
         expect(page).to have_content "Moderator ##{moderator.id}"
         #expect(page).to have_css "div.is-moderator"
@@ -438,7 +473,7 @@ describe "Commenting legislation questions" do
       citizen = create(:user, username: "Ana")
       manuela = create(:user, username: "Manuela")
       moderator = create(:moderator, user: manuela)
-      comment = create(:comment, commentable: legislation_question, user: citizen)
+      comment = create(:comment, commentable: legislation_question, user: citizen, subject: "Headline")
 
       login_as(manuela)
       visit legislation_process_question_path(legislation_question.process, legislation_question)
@@ -479,6 +514,7 @@ describe "Commenting legislation questions" do
       login_as(admin.user)
       visit legislation_process_question_path(legislation_question.process, legislation_question)
 
+      fill_in "comment_headline_legislation_question_#{legislation_question.id}", with: "Headline"
       fill_in "comment-body-legislation_question_#{legislation_question.id}", with: "I am your Admin!"
       check "comment-as-administrator-legislation_question_#{legislation_question.id}"
       check "terms_of_service_legislation_question_#{legislation_question.id}"
@@ -496,7 +532,7 @@ describe "Commenting legislation questions" do
       citizen = create(:user, username: "Ana")
       manuela = create(:user, username: "Manuela")
       admin   = create(:administrator, user: manuela)
-      comment = create(:comment, commentable: legislation_question, user: citizen)
+      comment = create(:comment, commentable: legislation_question, user: citizen, subject: "Headline")
 
       login_as(manuela)
       visit legislation_process_question_path(legislation_question.process, legislation_question)
@@ -534,7 +570,7 @@ describe "Commenting legislation questions" do
     let(:verified)   { create(:user, verified_at: Time.current) }
     let(:unverified) { create(:user) }
     let(:question)   { create(:legislation_question) }
-    let!(:comment)   { create(:comment, commentable: question) }
+    let!(:comment)   { create(:comment, commentable: question, subject: "Headline") }
 
     before do
       login_as(verified)

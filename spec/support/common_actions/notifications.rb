@@ -13,6 +13,10 @@ module Notifications
     "comment-body-#{resource.class.name.parameterize(separator: "_").to_sym}_#{resource.id}"
   end
 
+  def comment_headline(resource)
+    "comment_headline_#{resource.class.name.parameterize(separator: "_").to_sym}_#{resource.id}"
+  end
+
   def create_proposal_notification(proposal)
     login_as(proposal.author)
     visit root_path
