@@ -83,10 +83,12 @@
                   <%= user_level_class comment %>
                   <%= comment_author_class comment, comment.commentable.author_id %>
                   <%= comment_type_class comment, first_comment %>">
-          <%= simple_format sanitize_and_auto_link(comment.body), {}, sanitize: false %>
           <% if comment.root? && comment.commentable.class == Legislation::Question %>
             <p><strong><%= comment.subject %></strong></p>
           <% end %>
+          <%= simple_format_no_tags_no_sanitize (
+                comment.commentable.title.truncate_words(2, omission: "") +
+                "&nbsp;" + sanitize_and_auto_link(comment.body)) %>
         </div>
 
         <div id="<%= dom_id(comment) %>_reply" class="reply">
