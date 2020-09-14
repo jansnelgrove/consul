@@ -53,7 +53,7 @@ shared_examples "notifiable in-app" do |factory_name|
   end
 
   scenario "A user replied to my comment", :js do
-    comment = create :comment, commentable: notifiable, user: author, subject: "Headline"
+    comment = create :comment, commentable: notifiable, user: author
 
     login_as(create(:user, :verified))
     visit path_for(notifiable)
@@ -81,7 +81,7 @@ shared_examples "notifiable in-app" do |factory_name|
   end
 
   scenario "Multiple replies to my comment", :js do
-    comment = create :comment, commentable: notifiable, user: author, subject: "Headline"
+    comment = create :comment, commentable: notifiable, user: author
 
     3.times do |n|
       login_as(create(:user, :verified))
@@ -134,7 +134,7 @@ shared_examples "notifiable in-app" do |factory_name|
   end
 
   scenario "Author replied to his own comment", :js do
-    comment = create :comment, commentable: notifiable, user: author, subject: "Headline"
+    comment = create :comment, commentable: notifiable, user: author
 
     login_as author
     visit path_for(notifiable)

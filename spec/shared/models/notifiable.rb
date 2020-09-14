@@ -9,7 +9,7 @@ shared_examples "notifiable" do
     end
 
     it "returns the notifiable title when it's a reply to a root comment" do
-      comment = create(:comment, commentable: notifiable, subject: "Headline")
+      comment = create(:comment, commentable: notifiable)
       notification = create(:notification, notifiable: comment)
 
       expect(notification.notifiable_title).to eq notifiable.title
@@ -24,7 +24,7 @@ shared_examples "notifiable" do
     end
 
     it "returns true when it's a reply to comment and the notifiable is available" do
-      comment = create(:comment, commentable: notifiable, subject: "Headline")
+      comment = create(:comment, commentable: notifiable)
       notification = create(:notification, notifiable: comment)
 
       expect(notification.notifiable_available?).to be(true)
@@ -40,7 +40,7 @@ shared_examples "notifiable" do
     end
 
     it "returns false when it's a reply to comment and the commentable has been hidden" do
-      comment = create(:comment, commentable: notifiable, subject: "Headline")
+      comment = create(:comment, commentable: notifiable)
       notification = create(:notification, notifiable: comment)
 
       notifiable.hide

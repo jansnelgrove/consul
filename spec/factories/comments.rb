@@ -4,6 +4,7 @@ FactoryBot.define do
     user
     sequence(:body) { |n| "Comment body #{n}" }
     terms_of_service { "1" }
+    subject { "Headline" }
 
     trait :hidden do
       hidden_at { Time.current }
