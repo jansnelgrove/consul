@@ -27,12 +27,16 @@
     reset_and_hide_form: function(id) {
       var form_container, input;
       form_container = $("#js-comment-form-" + id);
+      input = form_container.find("form input");
+      input.val("");
       input = form_container.find("form textarea");
       input.val("");
       form_container.hide();
     },
     reset_form: function(id) {
       var input;
+      input = $("#js-comment-form-" + id + " form input");
+      input.val("");
       input = $("#js-comment-form-" + id + " form textarea");
       input.val("");
     },
