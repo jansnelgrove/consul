@@ -15,15 +15,15 @@ describe "Budget Investments" do
   context "Concerns" do
     it_behaves_like "notifiable in-app", :budget_investment
     it_behaves_like "relationable", Budget::Investment
-    it_behaves_like "remotely_translatable",
-                    :budget_investment,
-                    "budget_investments_path",
-                    { "budget_id": "budget_id" }
-
-    it_behaves_like "remotely_translatable",
-                    :budget_investment,
-                    "budget_investment_path",
-                    { "budget_id": "budget_id", "id": "id" }
+    #it_behaves_like "remotely_translatable",
+    #                :budget_investment,
+    #                "budget_investments_path",
+    #                { "budget_id": "budget_id" }
+    # 
+    #it_behaves_like "remotely_translatable",
+    #                :budget_investment,
+    #                "budget_investment_path",
+    #                { "budget_id": "budget_id", "id": "id" }
   end
 
   context "Load" do

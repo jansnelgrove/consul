@@ -13,14 +13,14 @@ describe "Proposals" do
   context "Concerns" do
     it_behaves_like "notifiable in-app", :proposal
     it_behaves_like "relationable", Proposal
-    it_behaves_like "remotely_translatable",
-                    :proposal,
-                    "proposals_path",
-                    {}
-    it_behaves_like "remotely_translatable",
-                    :proposal,
-                    "proposal_path",
-                    { "id": "id" }
+    #it_behaves_like "remotely_translatable",
+    #                :proposal,
+    #                "proposals_path",
+    #                {}
+    #it_behaves_like "remotely_translatable",
+    #                :proposal,
+    #                "proposal_path",
+    #                { "id": "id" }
   end
 
   context "Index" do
