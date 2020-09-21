@@ -434,6 +434,7 @@ describe "Commenting legislation questions" do
 
   describe "Moderators" do
     scenario "can create comment as a moderator", :js do
+      skip "Comment as moderator is disabled"
       moderator = create(:moderator)
 
       login_as(moderator.user)
@@ -455,6 +456,7 @@ describe "Commenting legislation questions" do
     end
 
     scenario "can create reply as a moderator", :js do
+      skip "Comment as moderator is disabled"
       citizen = create(:user, username: "Ana")
       manuela = create(:user, username: "Manuela")
       moderator = create(:moderator, user: manuela)
@@ -493,6 +495,7 @@ describe "Commenting legislation questions" do
 
   describe "Administrators" do
     scenario "can create comment as an administrator", :js do
+      skip "Comment as administrator is disabled"
       admin = create(:administrator)
 
       login_as(admin.user)
@@ -513,6 +516,7 @@ describe "Commenting legislation questions" do
     end
 
     scenario "can create reply as an administrator", :js do
+      skip "Comment as administrator is disabled"
       citizen = create(:user, username: "Ana")
       manuela = create(:user, username: "Manuela")
       admin   = create(:administrator, user: manuela)
