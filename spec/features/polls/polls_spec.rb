@@ -1,9 +1,10 @@
 require "rails_helper"
 
 describe "Polls" do
-  context "Concerns" do
-    it_behaves_like "notifiable in-app", :poll
-  end
+  # Comments disabled in polls
+  # context "Concerns" do
+  #   it_behaves_like "notifiable in-app", :poll
+  # end
 
   context "#index" do
     scenario "Shows description for open polls" do

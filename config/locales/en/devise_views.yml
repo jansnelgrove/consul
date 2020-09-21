@@ -107,8 +107,6 @@ en:
         new:
           cancel: Cancel login
           email_label: Email
-          organization_signup: Do you represent an organisation or collective? %{signup_link}
-          organization_signup_link: Sign up here
           password_confirmation_label: Confirm password
           password_label: Password
           redeemable_code: Verification code received via email (optional)

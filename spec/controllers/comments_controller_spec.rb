@@ -20,7 +20,8 @@ describe CommentsController do
                           commentable_id: question.id,
                           commentable_type: "Legislation::Question",
                           body: "a comment",
-                          terms_of_service: 1
+                          terms_of_service: 1,
+                          subject: "Headline"
                         }
                       }
       end.to change { question.reload.comments_count }.by(1)

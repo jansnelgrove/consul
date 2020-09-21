@@ -11,18 +11,33 @@
                         title: t("legislation.questions.comments.form.guidelines"),
                         label: t("legislation.questions.comments.form.guidelines") %>
 
-        <span class="help-text">
-          <%= t("legislation.questions.comments.form.leave_comment_help_text") %>
-        </span>
+        <%= f.label :subject, t("legislation.questions.comments.form.headline") %>
+        <br>
 
-        <%= f.text_area :body, id: "comment-body-#{css_id}",
-                               maxlength: Comment.body_max_length,
-                               label: false %>
+        <div class="input-group">
+          <span class="input-group-label">
+            <%= @question.title.split(" ").second %>
+          </span>
+          <%= f.text_field :subject,
+                           id: "comment_headline_#{css_id}",
+                           label: false,
+                           maxlength: 60,
+                           placeholder: t("legislation.questions.comments.form.headline_placeholder") %>
+        </div>
+
+        <%= f.text_area :body,
+                        id: "comment-body-#{css_id}",
+                        maxlength: Comment.body_max_length,
+                        rows: 4,
+                        label: false,
+                        placeholder: t("legislation.questions.comments.form.leave_comment_help_text") %>
       <% else %>
         <%= f.hidden_field :terms_of_service, value: 1 %>
+        <%= f.hidden_field :subject, value: 1 %>
 
         <%= f.text_area :body, id: "comment-body-#{css_id}",
                                maxlength: Comment.body_max_length,
+                               rows: 4,
                                label: leave_reply_text(commentable) %>
       <% end %>
 
@@ -33,19 +48,21 @@
 
       <%= f.submit comment_button_text(parent_id, commentable), class: "button", id: "publish_comment" %>
 
-      <% if can? :comment_as_moderator, commentable %>
-        <div class="float-right">
-          <%= f.check_box :as_moderator,
-            label: t("comments.form.comment_as_moderator"),
-            id: "comment-as-moderator-#{css_id}" %>
-        </div>
-      <% end %>
-      <% if can? :comment_as_administrator, commentable %>
-        <div class="float-right">
-          <%= f.check_box :as_administrator,
-            label: t("comments.form.comment_as_admin"),
-            id: "comment-as-administrator-#{css_id}" %>
-        </div>
+      <% if commentable.class != Legislation::Question %>
+        <% if can? :comment_as_moderator, commentable %>
+          <div class="float-right">
+            <%= f.check_box :as_moderator,
+              label: t("comments.form.comment_as_moderator"),
+              id: "comment-as-moderator-#{css_id}" %>
+          </div>
+        <% end %>
+        <% if can? :comment_as_administrator, commentable %>
+          <div class="float-right">
+            <%= f.check_box :as_administrator,
+              label: t("comments.form.comment_as_admin"),
+              id: "comment-as-administrator-#{css_id}" %>
+          </div>
+        <% end %>
       <% end %>
 
     <% end %>

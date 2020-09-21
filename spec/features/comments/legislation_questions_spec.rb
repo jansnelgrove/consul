@@ -17,7 +17,7 @@ describe "Commenting legislation questions" do
 
     expect(page).to have_css(".comment", count: 3)
 
-    comment = Comment.last
+    comment = Comment.first
     within first(".comment") do
       expect(page).to have_content comment.user.name
       expect(page).to have_content I18n.l(comment.created_at, format: :datetime)
@@ -106,8 +106,8 @@ describe "Commenting legislation questions" do
 
     visit legislation_process_question_path(legislation_question.process, legislation_question, order: :newest)
 
+    expect(c1.body).to appear_before(c2.body)
     expect(c3.body).to appear_before(c2.body)
-    expect(c2.body).to appear_before(c1.body)
 
     visit legislation_process_question_path(legislation_question.process, legislation_question, order: :oldest)
 
@@ -117,7 +117,7 @@ describe "Commenting legislation questions" do
 
   scenario "First comment always appear the first one" do
     legislation_process = create :legislation_process, :in_debate_phase
-    question = create :legislation_question, process: legislation_process, title: "1.1 First question"
+    question = create :legislation_question, process: legislation_process, title: "Section 1.1 First question"
     first_comment = create(:comment, commentable: question)
 
     per_page = 10
@@ -179,12 +179,12 @@ describe "Commenting legislation questions" do
 
     visit legislation_process_question_path(legislation_question.process, legislation_question, order: :most_voted)
 
-    expect(new_root.body).to appear_before(old_root.body)
+    expect(old_root.body).to appear_before(new_root.body)
     expect(old_child.body).to appear_before(new_child.body)
 
     visit legislation_process_question_path(legislation_question.process, legislation_question, order: :newest)
 
-    expect(new_root.body).to appear_before(old_root.body)
+    expect(old_root.body).to appear_before(new_root.body)
     expect(new_child.body).to appear_before(old_child.body)
 
     visit legislation_process_question_path(legislation_question.process, legislation_question, order: :oldest)
@@ -225,7 +225,7 @@ describe "Commenting legislation questions" do
 
     visit legislation_process_question_path(legislation_question.process, legislation_question)
 
-    expect(page).to have_css(".comment", count: per_page)
+    expect(page).to have_css(".comment", count: per_page + 1)
     within("ul.pagination") do
       expect(page).to have_content("1")
       expect(page).to have_content("2")
@@ -253,13 +253,30 @@ describe "Commenting legislation questions" do
     login_as(user)
     visit legislation_process_question_path(legislation_question.process, legislation_question)
 
+    fill_in "comment_headline_legislation_question_#{legislation_question.id}", with: "Headline"
     fill_in "comment-body-legislation_question_#{legislation_question.id}", with: "Have you thought about...?"
     check "terms_of_service_legislation_question_#{legislation_question.id}"
     click_button "Publish Proposed Amendment"
 
     within "#comments" do
       expect(page).to have_content "Have you thought about...?"
-      expect(page).to have_content "(1)"
+      expect(page).to have_content "Headline"
+    end
+  end
+
+  scenario "Show headline and section title", :js do
+    login_as(user)
+    headline = create(:legislation_question, process: process, title: "Section 10.1. Constitutional")
+    visit legislation_process_question_path(legislation_question.process, headline)
+
+    fill_in "comment_headline_legislation_question_#{headline.id}", with: "Awesome Headline"
+    fill_in "comment-body-legislation_question_#{headline.id}", with: "Have you thought about...?"
+    check "terms_of_service_legislation_question_#{headline.id}"
+    click_button "Publish Proposed Amendment"
+
+    within "#comments" do
+      expect(page).to have_content "Awesome Headline"
+      expect(page).to have_content "Section 10.1. Have you thought about...?"
     end
   end
 
@@ -303,7 +320,6 @@ describe "Commenting legislation questions" do
 
     within "#js-comment-form-comment_#{comment.id}" do
       fill_in "comment-body-comment_#{comment.id}", with: "It will be done next week."
-      check "terms_of_service_comment_#{comment.id}"
       click_button "Publish comment"
     end
 
@@ -403,6 +419,7 @@ describe "Commenting legislation questions" do
     login_as(user)
     visit legislation_process_question_path(legislation_question.process, legislation_question)
 
+    fill_in "comment_headline_legislation_question_#{legislation_question.id}", with: "Headline"
     fill_in "comment-body-legislation_question_#{legislation_question.id}", with: "Testing submit button!"
     check "terms_of_service_legislation_question_#{legislation_question.id}"
     click_button "Publish Proposed Amendment"
@@ -411,22 +428,26 @@ describe "Commenting legislation questions" do
     # This should be checked before the Ajax request is finished
     expect(page).not_to have_button "Publish Proposed Amendment"
 
+    expect(page).to have_content("Headline")
     expect(page).to have_content("Testing submit button!")
   end
 
   describe "Moderators" do
     scenario "can create comment as a moderator", :js do
+      skip "Comment as moderator is disabled"
       moderator = create(:moderator)
 
       login_as(moderator.user)
       visit legislation_process_question_path(legislation_question.process, legislation_question)
 
+      fill_in "comment_headline_legislation_question_#{legislation_question.id}", with: "Headline"
       fill_in "comment-body-legislation_question_#{legislation_question.id}", with: "I am moderating!"
       check "comment-as-moderator-legislation_question_#{legislation_question.id}"
       check "terms_of_service_legislation_question_#{legislation_question.id}"
       click_button "Publish Proposed Amendment"
 
       within "#comments" do
+        expect(page).to have_content "Headline"
         expect(page).to have_content "I am moderating!"
         expect(page).to have_content "Moderator ##{moderator.id}"
         #expect(page).to have_css "div.is-moderator"
@@ -435,6 +456,7 @@ describe "Commenting legislation questions" do
     end
 
     scenario "can create reply as a moderator", :js do
+      skip "Comment as moderator is disabled"
       citizen = create(:user, username: "Ana")
       manuela = create(:user, username: "Manuela")
       moderator = create(:moderator, user: manuela)
@@ -448,7 +470,6 @@ describe "Commenting legislation questions" do
       within "#js-comment-form-comment_#{comment.id}" do
         fill_in "comment-body-comment_#{comment.id}", with: "I am moderating!"
         check "comment-as-moderator-comment_#{comment.id}"
-        check "terms_of_service_comment_#{comment.id}"
         click_button "Publish comment"
       end
 
@@ -474,11 +495,13 @@ describe "Commenting legislation questions" do
 
   describe "Administrators" do
     scenario "can create comment as an administrator", :js do
+      skip "Comment as administrator is disabled"
       admin = create(:administrator)
 
       login_as(admin.user)
       visit legislation_process_question_path(legislation_question.process, legislation_question)
 
+      fill_in "comment_headline_legislation_question_#{legislation_question.id}", with: "Headline"
       fill_in "comment-body-legislation_question_#{legislation_question.id}", with: "I am your Admin!"
       check "comment-as-administrator-legislation_question_#{legislation_question.id}"
       check "terms_of_service_legislation_question_#{legislation_question.id}"
@@ -493,6 +516,7 @@ describe "Commenting legislation questions" do
     end
 
     scenario "can create reply as an administrator", :js do
+      skip "Comment as administrator is disabled"
       citizen = create(:user, username: "Ana")
       manuela = create(:user, username: "Manuela")
       admin   = create(:administrator, user: manuela)
@@ -506,7 +530,6 @@ describe "Commenting legislation questions" do
       within "#js-comment-form-comment_#{comment.id}" do
         fill_in "comment-body-comment_#{comment.id}", with: "Top of the world!"
         check "comment-as-administrator-comment_#{comment.id}"
-        check "terms_of_service_comment_#{comment.id}"
         click_button "Publish comment"
       end
 

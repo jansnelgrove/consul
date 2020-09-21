@@ -6,6 +6,7 @@ describe "Commenting polls" do
   let(:poll) { create(:poll, author: create(:user)) }
 
   scenario "Index" do
+    skip "Comments disabled in polls"
     3.times { create(:comment, commentable: poll) }
 
     visit poll_path(poll)
@@ -41,6 +42,7 @@ describe "Commenting polls" do
   end
 
   scenario "Link to comment show" do
+    skip "Comments disabled in polls"
     comment = create(:comment, commentable: poll, user: user)
 
     visit poll_path(poll)
@@ -56,6 +58,7 @@ describe "Commenting polls" do
   end
 
   scenario "Collapsable comments", :js do
+    skip "Comments disabled in polls"
     parent_comment = create(:comment, body: "Main comment", commentable: poll)
     child_comment  = create(:comment, body: "First subcomment", commentable: poll, parent: parent_comment)
     grandchild_comment = create(:comment, body: "Last subcomment", commentable: poll, parent: child_comment)
@@ -87,6 +90,7 @@ describe "Commenting polls" do
   end
 
   scenario "Comment order" do
+    skip "Comments disabled in polls"
     c1 = create(:comment, :with_confidence_score, commentable: poll, cached_votes_up: 100,
                                                   cached_votes_total: 120, created_at: Time.current - 2)
     c2 = create(:comment, :with_confidence_score, commentable: poll, cached_votes_up: 10,
@@ -111,6 +115,7 @@ describe "Commenting polls" do
   end
 
   scenario "Creation date works differently in roots and in child comments, when sorting by confidence_score" do
+    skip "Comments disabled in polls"
     old_root = create(:comment, commentable: poll, created_at: Time.current - 10)
     new_root = create(:comment, commentable: poll, created_at: Time.current)
     old_child = create(:comment, commentable: poll, parent_id: new_root.id, created_at: Time.current - 10)
@@ -133,6 +138,7 @@ describe "Commenting polls" do
   end
 
   scenario "Turns links into html links" do
+    skip "Comments disabled in polls"
     create :comment, commentable: poll, body: "Built with http://rubyonrails.org/"
 
     visit poll_path(poll)
@@ -146,6 +152,7 @@ describe "Commenting polls" do
   end
 
   scenario "Sanitizes comment body for security" do
+    skip "Comments disabled in polls"
     create :comment, commentable: poll,
                      body: "<script>alert('hola')</script> <a href=\"javascript:alert('sorpresa!')\">click me<a/> http://www.url.com"
 
@@ -159,6 +166,7 @@ describe "Commenting polls" do
   end
 
   scenario "Paginated comments" do
+    skip "Comments disabled in polls"
     per_page = 10
     (per_page + 2).times { create(:comment, commentable: poll) }
 
@@ -177,6 +185,7 @@ describe "Commenting polls" do
 
   describe "Not logged user" do
     scenario "can not see comments forms" do
+      skip "Comments disabled in polls"
       create(:comment, commentable: poll)
       visit poll_path(poll)
 
@@ -189,6 +198,7 @@ describe "Commenting polls" do
   end
 
   scenario "Create", :js do
+    skip "Comments disabled in polls"
     login_as(user)
     visit poll_path(poll)
 
@@ -205,6 +215,7 @@ describe "Commenting polls" do
   end
 
   scenario "Errors on create", :js do
+    skip "Comments disabled in polls"
     login_as(user)
     visit poll_path(poll)
 
@@ -214,6 +225,7 @@ describe "Commenting polls" do
   end
 
   scenario "Reply", :js do
+    skip "Comments disabled in polls"
     citizen = create(:user, username: "Ana")
     manuela = create(:user, username: "Manuela")
     comment = create(:comment, commentable: poll, user: citizen)
@@ -236,6 +248,7 @@ describe "Commenting polls" do
   end
 
   scenario "Errors on reply", :js do
+    skip "Comments disabled in polls"
     comment = create(:comment, commentable: poll, user: user)
 
     login_as(user)
@@ -250,6 +263,7 @@ describe "Commenting polls" do
   end
 
   scenario "N replies", :js do
+    skip "Comments disabled in polls"
     parent = create(:comment, commentable: poll)
 
     7.times do
@@ -315,6 +329,7 @@ describe "Commenting polls" do
   end
 
   scenario "Erasing a comment's author" do
+    skip "Comments disabled in polls"
     poll = create(:poll)
     comment = create(:comment, commentable: poll, body: "this should be visible")
     comment.user.erase
@@ -461,6 +476,7 @@ describe "Commenting polls" do
     end
 
     scenario "Show" do
+      skip "Comments disabled in polls"
       create(:vote, voter: verified, votable: comment, vote_flag: true)
       create(:vote, voter: unverified, votable: comment, vote_flag: false)
 
@@ -480,6 +496,7 @@ describe "Commenting polls" do
     end
 
     scenario "Create", :js do
+      skip "Comments disabled in polls"
       visit poll_path(poll)
 
       within("#comment_#{comment.id}_votes") do
@@ -498,6 +515,7 @@ describe "Commenting polls" do
     end
 
     scenario "Update", :js do
+      skip "Comments disabled in polls"
       visit poll_path(poll)
 
       within("#comment_#{comment.id}_votes") do
@@ -522,6 +540,7 @@ describe "Commenting polls" do
     end
 
     scenario "Trying to vote multiple times", :js do
+      skip "Comments disabled in polls"
       visit poll_path(poll)
 
       within("#comment_#{comment.id}_votes") do

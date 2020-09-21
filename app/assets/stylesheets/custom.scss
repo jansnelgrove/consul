@@ -12,6 +12,7 @@
 }
 
 .comment-body .reply {
+  font-size: $base-font-size;
 
   [class^="icon-arrow"] {
     left: -14px;
@@ -23,3 +24,19 @@
 .auth-form .signup-help-link a {
   font-size: $base-font-size;
 }
+
+.comment-form {
+
+  .input-group {
+    margin-bottom: 0;
+
+    [type="text"] {
+      margin-bottom: 0 !important;
+    }
+  }
+
+  .input-group-label {
+    height: $line-height * 2;
+  }
+}
+

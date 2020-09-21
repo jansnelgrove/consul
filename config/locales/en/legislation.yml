@@ -93,7 +93,7 @@ en:
         comments_title_link: "read the guidelines"
         comments_title_url: "/guidelines"
         original_version: "Original Version"
-        proposed_amendment_for: "Proposed Amendment to Section %{section}"
+        proposed_amendment_for: "Proposed Amendment to %{section}"
         comments_closed: Closed phase
         form:
           leave_comment_help_text: "Submit your proposed amendemnt in the box below"
@@ -101,6 +101,8 @@ en:
           leave_reply: "Write your comment"
           error: "Make sure that the amendment is not blank and confirm that you have read the guidelines for submitting an amendment."
           guidelines: "Please confirm that you have read the guidelines for submitting an amendment."
+          headline: "Enter your Headline below - required field to enable Publishing."
+          headline_placeholder: "Your Headline here max 60 characters (required field)"
       question:
         comments:
           zero: No comments

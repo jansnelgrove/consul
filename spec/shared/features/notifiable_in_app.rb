@@ -30,7 +30,9 @@ shared_examples "notifiable in-app" do |factory_name|
       login_as(create(:user, :verified))
 
       visit path_for(notifiable)
-
+      if page.has_css?("##{comment_headline(notifiable)}")
+        fill_in comment_headline(notifiable), with: "Headline"
+      end
       fill_in comment_body(notifiable), with: "Number #{n + 1} is the best!"
       if page.has_css?("##{checkbox}")
         check checkbox
@@ -113,6 +115,9 @@ shared_examples "notifiable in-app" do |factory_name|
     login_as(author)
     visit path_for(notifiable)
 
+    if page.has_css?("##{comment_headline(notifiable)}")
+      fill_in comment_headline(notifiable), with: "Headline"
+    end
     fill_in comment_body(notifiable), with: "I commented on my own notifiable"
     if page.has_css?("##{checkbox}")
       check checkbox
