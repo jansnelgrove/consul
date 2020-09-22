@@ -276,7 +276,7 @@ describe "Commenting legislation questions" do
 
     within "#comments" do
       expect(page).to have_content "Awesome Headline"
-      expect(page).to have_content "Section 10.1. Have you thought about...?"
+      expect(page).to have_content "Have you thought about...?"
     end
   end
 

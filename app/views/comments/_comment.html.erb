@@ -86,9 +86,7 @@
           <% if comment.root? && comment.commentable.class == Legislation::Question %>
             <p><strong><%= comment.subject %></strong></p>
           <% end %>
-          <%= simple_format_no_tags_no_sanitize (
-                comment.commentable.title.truncate_words(2, omission: "") +
-                "&nbsp;" + sanitize_and_auto_link(comment.body)) %>
+          <%= simple_format sanitize_and_auto_link(comment.body), {}, sanitize: false %>
         </div>
 
         <div id="<%= dom_id(comment) %>_reply" class="reply">
