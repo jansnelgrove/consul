@@ -171,6 +171,44 @@ describe "Commenting legislation questions" do
     end
   end
 
+  scenario "Votes are correctly counted for old ammendments with empty subject", :js do
+    user = create(:user, :level_two)
+    comment = create(:comment, commentable: legislation_question)
+    comment.subject = ""
+    comment.save(validate: false)
+
+    login_as(user)
+    visit legislation_process_question_path(legislation_question.process, legislation_question)
+
+    within("#comment_#{comment.id}_votes") do
+      find(".in_favor a").click
+
+      within(".in_favor") do
+        expect(page).to have_content "1"
+      end
+
+      within(".against") do
+        expect(page).to have_content "0"
+      end
+
+      expect(page).to have_content "1 vote"
+    end
+
+    visit legislation_process_question_path(legislation_question.process, legislation_question)
+
+    within("#comment_#{comment.id}_votes") do
+      within(".in_favor") do
+        expect(page).to have_content "1"
+      end
+
+      within(".against") do
+        expect(page).to have_content "0"
+      end
+
+      expect(page).to have_content "1 vote"
+    end
+  end
+
   scenario "Creation date works differently in roots and in child comments, even when sorting by confidence_score" do
     old_root = create(:comment, commentable: legislation_question, created_at: Time.current - 10)
     new_root = create(:comment, commentable: legislation_question, created_at: Time.current)
