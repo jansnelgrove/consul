@@ -135,6 +135,13 @@ class Comment < ApplicationRecord
                                                              cached_votes_up)
   end
 
+  def set_votes_counter
+    self.cached_votes_total = self.find_votes_for.count
+    self.cached_votes_up = self.get_up_votes.count
+    self.cached_votes_down = self.get_down_votes.count
+    self.save(validate: false)
+  end
+
   private
 
     def validate_body_length

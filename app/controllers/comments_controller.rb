@@ -29,6 +29,7 @@ class CommentsController < ApplicationController
 
   def vote
     @comment.vote_by(voter: current_user, vote: params[:value])
+    @comment.set_votes_counter if @comment.commentable.is_a? Legislation::Question
     respond_with @comment
   end
 
