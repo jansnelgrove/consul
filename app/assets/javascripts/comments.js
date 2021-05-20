@@ -41,6 +41,11 @@
       input.val("");
     },
     toggle_form: function(id) {
+      var arrow;
+      arrow = "span#" + id + "_children_arrow";
+      if ($(arrow).hasClass("icon-arrow-right")) {
+        $(arrow).click();
+      }
       $("#js-comment-form-" + id).toggle();
     },
     toggle_arrow: function(id) {
@@ -62,6 +67,7 @@
         }
       });
       $("body .js-toggle-children").each(function() {
+        $(this).off("click");
         $(this).on("click", function() {
           var children_container_id;
           children_container_id = ($(this).data().id) + "_children";
