@@ -25,7 +25,7 @@ describe "Commenting legislation questions" do
     end
   end
 
-  scenario "Show" do
+  scenario "Show collapsed comments by default" do
     parent_comment = create(:comment, commentable: legislation_question)
     first_child    = create(:comment, commentable: legislation_question, parent: parent_comment)
     second_child   = create(:comment, commentable: legislation_question, parent: parent_comment)
@@ -33,16 +33,16 @@ describe "Commenting legislation questions" do
 
     visit comment_path(parent_comment)
 
-    expect(page).to have_css(".comment", count: 3)
+    expect(page).to have_css(".comment", count: 1)
     expect(page).to have_content parent_comment.body
-    expect(page).to have_content first_child.body
-    expect(page).to have_content second_child.body
+    expect(page).not_to have_content first_child.body
+    expect(page).not_to have_content second_child.body
 
     expect(page).to have_link "Go back to #{legislation_question.title}", href: href
 
     expect(page).to have_selector("ul#comment_#{parent_comment.id}>li", count: 2)
-    expect(page).to have_selector("ul#comment_#{first_child.id}>li", count: 1)
-    expect(page).to have_selector("ul#comment_#{second_child.id}>li", count: 1)
+    expect(page).not_to have_selector("ul#comment_#{first_child.id}>li", count: 1)
+    expect(page).not_to have_selector("ul#comment_#{second_child.id}>li", count: 1)
   end
 
   scenario "Link to comment show" do
@@ -67,10 +67,10 @@ describe "Commenting legislation questions" do
 
     visit legislation_process_question_path(legislation_question.process, legislation_question)
 
-    expect(page).to have_css(".comment", count: 3)
-    expect(page).to have_content("1 response (collapse)", count: 2)
+    expect(page).to have_css(".comment", count: 1)
+    expect(page).to have_content("1 response (show)", count: 1)
 
-    find("#comment_#{child_comment.id}_children_arrow").click
+    find("#comment_#{parent_comment.id}_children_arrow").click
 
     expect(page).to have_css(".comment", count: 2)
     expect(page).to have_content("1 response (collapse)")
@@ -100,16 +100,22 @@ describe "Commenting legislation questions" do
                                                   cached_votes_total: 2, created_at: Time.current)
 
     visit legislation_process_question_path(legislation_question.process, legislation_question, order: :most_voted)
+    find("#comment_#{c1.id}_children_arrow").click
+    find("#comment_#{c2.id}_children_arrow").click
 
     expect(c1.body).to appear_before(c2.body)
     expect(c2.body).to appear_before(c3.body)
 
     visit legislation_process_question_path(legislation_question.process, legislation_question, order: :newest)
+    find("#comment_#{c1.id}_children_arrow").click
+    find("#comment_#{c3.id}_children_arrow").click
 
     expect(c1.body).to appear_before(c2.body)
     expect(c3.body).to appear_before(c2.body)
 
     visit legislation_process_question_path(legislation_question.process, legislation_question, order: :oldest)
+    find("#comment_#{c1.id}_children_arrow").click
+    find("#comment_#{c2.id}_children_arrow").click
 
     expect(c1.body).to appear_before(c2.body)
     expect(c2.body).to appear_before(c3.body)

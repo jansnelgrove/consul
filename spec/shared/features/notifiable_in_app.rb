@@ -97,6 +97,7 @@ shared_examples "notifiable in-app" do |factory_name|
       end
 
       within "#comment_#{comment.id}" do
+        find("#comment_#{comment.id}_children_arrow").click
         expect(page).to have_content "Reply number #{n}"
       end
       logout
